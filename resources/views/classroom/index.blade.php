@@ -62,3 +62,6 @@
     </div>
 @stop
 {{--  @include('partisals.footer')  --}}
+@push('scripts')
+    <script> console.log('@ stack') </script>
+@endpush

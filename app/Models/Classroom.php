@@ -20,8 +20,8 @@ class Classroom extends Model
     ];
 
 //change the route key name from id to code
-    // public function getRouteKeyName()
-    // {
-    //     return 'code';
-    // }
+public function getRouteKeyName()
+{
+    return 'code';
+}
 }
