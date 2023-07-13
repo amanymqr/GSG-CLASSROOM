@@ -1,5 +1,6 @@
-
-@include('partisals.header')
+@extends('layouts.master')
+@section('content')
+{{--  @include('partisals.header')  --}}
 
 
     <div class="container">
@@ -21,4 +22,7 @@
     </div>
     {{--  @include('layouts.footer')  --}}
 
-    @include('partisals.footer')
+    {{--  @include('partisals.footer')  --}}
+
+
+@endsection

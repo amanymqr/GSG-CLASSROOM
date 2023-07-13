@@ -13,8 +13,8 @@ class ClassroomsController extends Controller
     {
         //return response/redirect/json data/file/string
         $classroom = Classroom::orderBy('id', 'DESC')->get(); //collection
-        // dd($classroom);
-        return view('classroom.index', compact('classroom'));
+        // session('sucsess');
+        return view('classroom.index', compact('classroom'))->with('sucsess', 'Classroom created');
     }
 
     public function create()
@@ -38,39 +38,41 @@ class ClassroomsController extends Controller
             'code' => Str::random(8),
         ]);
         $classroom = Classroom::create($request->all());
-        return redirect()->route('classroom.index');
+        return redirect()->route('classroom.index')->with('msg' ,'classroom craeted successfully')->with('type', 'success');
     }
 
 
 
-    public function show($id)
+    public function show(Classroom $classroom)
     {
-        $classroom = Classroom::findOrFail($id);
+        // $classroom = Classroom::findOrFail($id);
         return view('classroom.show', [
             'classroom' => $classroom,
         ]);
     }
 
-    public function edit($id)
+    public function edit(Classroom $classroom)
     {
-        $classroom = Classroom::findOrFail($id);
+        // $classroom = Classroom::findOrFail($id);
         return view('classroom.edit', [
             'classroom' => $classroom
         ]);
     }
 
-    public function update(Request $request ,$id){
+    public function update(Request $request ,Classroom $classroom){
         //Mass Assigment
-        $classroom=Classroom::findOrFail($id);
+        // $classroom=Classroom::findOrFail($id);
         $classroom->update($request->all());
-        return redirect()->route('classroom.index');
+        return redirect()->route('classroom.index')->with('msg' ,'classroom updated successfully')->with('type', 'primary');
     }
 
     public function destroy($id){
         Classroom::destroy($id);
-        return redirect()->route('classroom.index');
+        //flash msgs
+        return redirect()->route('classroom.index')->with('msg' ,'classroom deleted successfully')->with('type', 'danger');
+
 
     }
-
+//with('msg', 'Product updated successfully')->with('type', 'info');
 
 };

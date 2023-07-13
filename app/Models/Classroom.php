@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Classroom extends Model
 {
+
+    use HasFactory;
     protected $fillable=[
         'name',
         'section',
@@ -16,5 +18,10 @@ class Classroom extends Model
         'cover_image_path',
         'code'
     ];
-    use HasFactory;
+
+//change the route key name from id to code
+    public function getRouteKeyName()
+    {
+        return 'id';
+    }
 }

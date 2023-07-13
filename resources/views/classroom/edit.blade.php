@@ -1,5 +1,5 @@
-@include('partisals.header')
-
+@extends('layouts.master')
+@section('content')
 
     <div class="container py-5">
         <h1 class="text-center">Update Classroom</h1>
@@ -35,7 +35,7 @@
         </form>
 
     </div>
-
-    @include('partisals.footer')
+@stop
+    {{--  @include('partisals.footer')  --}}
 
 
