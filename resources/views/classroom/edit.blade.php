@@ -1,4 +1,6 @@
 @extends('layouts.master')
+@section('title' , 'edit classrooms' .$classroom->name)
+
 @section('content')
 
     <div class="container py-5">

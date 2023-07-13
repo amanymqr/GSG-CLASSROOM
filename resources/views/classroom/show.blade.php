@@ -1,6 +1,7 @@
 @extends('layouts.master')
+@section('title' , 'show classrooms')
+
 @section('content')
-{{--  @include('partisals.header')  --}}
 
 
     <div class="container">
@@ -20,9 +21,6 @@
             </div>
         </div>
     </div>
-    {{--  @include('layouts.footer')  --}}
-
-    {{--  @include('partisals.footer')  --}}
 
 
 @endsection

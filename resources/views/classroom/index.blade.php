@@ -1,4 +1,5 @@
 @extends('layouts.master')
+@section('title' , 'classrooms')
 @section('content')
 
 

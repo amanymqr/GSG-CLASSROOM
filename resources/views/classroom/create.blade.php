@@ -1,5 +1,7 @@
-@include('partisals.header')
+@extends('layouts.master')
 
+@section('title' , 'cretae classrooms')
+@section('content')
 
     <div class="container py-5">
         <h1>Create Classroom</h1>
@@ -35,5 +37,4 @@
 
     </div>
 
-    @include('partisals.footer')
-
+@stop
