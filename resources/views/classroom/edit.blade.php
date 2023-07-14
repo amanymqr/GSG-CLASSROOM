@@ -5,7 +5,7 @@
 
     <div class="container py-5">
         <h1 class="text-center">Update Classroom</h1>
-        <form action="{{ route('classroom.update' , $classroom->id) }}" method="POST">
+        <form action="{{ route('classroom.update' , $classroom->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('put')
             <div class="form-floating mb-3">
@@ -29,9 +29,9 @@
             </div>
 
 
-            {{--  <img src="{{asset('storage/'.$classroom->cover_image_path)}}" alt="...">  --}}
+            <img src="{{asset('storage/'.$classroom->cover_image_path)}}" alt="...">
 
-            <img src="{{ Storage::disk('public')->url($classroom->cover_image_path) }}" alt="...">
+            {{--  <img src="{{ Storage::disk('public')->url($classroom->cover_image_path) }}" alt="...">  --}}
 
             <div class=" mb-3">
                 <label for="floatingInput">cover image</label>
@@ -44,5 +44,3 @@
     </div>
 @stop
     {{--  @include('partisals.footer')  --}}
-
-

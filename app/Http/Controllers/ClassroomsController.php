@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classroom;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class ClassroomsController extends Controller
 {
@@ -16,7 +18,7 @@ class ClassroomsController extends Controller
         // session('sucsess');
         return view('classroom.index', compact('classroom'))->with('sucsess', 'Classroom created');
     }
-
+//-----------------------------
     public function create()
     {
         return view('classroom.create');
@@ -43,16 +45,14 @@ class ClassroomsController extends Controller
             ]);
         }
 
-
         $request->merge([
             'code' => Str::random(8),
         ]);
         $classroom = Classroom::create($request->all());
+
         return redirect()->route('classroom.index')->with('msg' ,'classroom craeted successfully')->with('type', 'success');
     }
-
-
-
+//-------------------------------
     public function show(Classroom $classroom)
     {
         // $classroom = Classroom::findOrFail($id);
@@ -60,29 +60,80 @@ class ClassroomsController extends Controller
             'classroom' => $classroom,
         ]);
     }
-
-    public function edit($id)
-    {
+//----------------------------------
+    public function edit($id){
         $classroom = Classroom::findOrFail($id);
         return view('classroom.edit', [
             'classroom' => $classroom
         ]);
     }
+//----------------------------------
 
-    public function update(Request $request ,$id){
-        //Mass Assigment
-        $classroom=Classroom::findOrFail($id);
-        $classroom->update($request->all());
-        return redirect()->route('classroom.index')->with('msg' ,'classroom updated successfully')->with('type', 'primary');
+// public function update(Request $request, $id)
+// {
+//     $classroom = Classroom::findOrFail($id);
+
+//     if ($request->hasFile('cover_image')) {
+//         // Delete the old image file
+//         Storage::delete('public/' . $classroom->cover_image_path);
+
+//         $file = $request->file('cover_image'); // Uploaded File
+//         $img = $file->store('/covers', 'public');
+//     }
+
+//     // Update attributes using mass assignment
+//     $classroom->update(array_merge($request->except('cover_image'), [
+//         'cover_image_path' => $img ?? $classroom->cover_image_path,
+//     ]));
+
+//     return redirect()
+//         ->route('classroom.index')
+//         ->with('msg', 'Classroom updated successfully')
+//         ->with('type', 'success');
+// }
+
+public function update(Request $request, $id)
+{
+    $classroom = Classroom::findOrFail($id);
+    if ($request->hasFile('cover_image')) {
+        // Delete the old image file
+
+        $file = $request->file('cover_image'); // Uploaded File
+        $cover_image = $file->store('/covers', 'public');
     }
 
-    public function destroy($id){
-        Classroom::destroy($id);
-        //flash msgs
-        return redirect()->route('classroom.index')->with('msg' ,'classroom deleted successfully')->with('type', 'danger');
+    $classroom->update([
+        'cover_image_path' => $cover_image,
+        'section' => $request->section,
+        'room' => $request->room,
+        'subject' => $request->subject,
+        'name' => $request->name,
+
+    ]);
+
+    return redirect()
+        ->route('classroom.index')
+        ->with('msg', 'Classroom updated successfully')
+        ->with('type', 'success');
+}
 
 
+//-----------------------------------
+public function destroy($id)
+{
+    $classroom = Classroom::find($id);
+
+    if ($classroom->cover_image_path) {
+        // Delete the cover image file
+        Storage::delete('public/' . $classroom->cover_image_path);
     }
-//with('msg', 'Product updated successfully')->with('type', 'info');
+
+    Classroom::destroy($id);
+
+    return redirect()->route('classroom.index')
+        ->with('msg', 'Classroom deleted successfully')
+        ->with('type', 'danger');
+}
 
 };
+
