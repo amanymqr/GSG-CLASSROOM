@@ -18,7 +18,7 @@ use App\Http\Controllers\ClassroomsController1;
 
 // Topics Routs
 Route::resource('/classroom', ClassroomsController::class);
-// Route::resource('/topics', TopicsController::class);
+Route::resource('/topics', TopicsController::class);
 
 
 Route::get('/', function () {

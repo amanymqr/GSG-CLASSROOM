@@ -13,4 +13,7 @@ class Topic extends Model
     // protected $keyType ='int';
     // public $incrementing =true;
     // public $timestamps= false ;
+    protected $fillable = [
+        'name',
+    ];
 }

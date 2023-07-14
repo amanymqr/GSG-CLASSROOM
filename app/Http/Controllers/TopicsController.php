@@ -2,63 +2,63 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Topic;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class TopicsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $topics = Topic::orderBy('name','DESC')->get();
+        return view('topics.index', compact('topics'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+
+    public function create(Request $request)
     {
-        //
+        return view('topics.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
-        //
+        $topic = new Topic();
+        $topic->name = $request->post('name');
+        $topic->save();
+        return redirect()->route('topics.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+
+    public function show($id)
     {
-        //
+        $topic = Topic::findOrFail($id);
+        return view('topics.show', compact('topic'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+
+
+    public function edit($id)
     {
-        //
+        $topic = Topic::findOrFail($id);
+        return view('topics.edit', compact('topic'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+
+
+    public function update(Request $request, $id)
     {
-        //
+        $topic = Topic::findOrFail($id);
+        $topic->update($request->all());
+        return Redirect::route('topics.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+
+
+    public function destroy($id)
     {
-        //
+        $topic = Topic::findOrFail($id);
+        $topic->destroy($id);
+        return redirect(route('topics.index'));
     }
 }
