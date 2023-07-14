@@ -5,7 +5,7 @@
 
     <div class="container py-5">
         <h1>Create Classroom</h1>
-        <form action="{{ route('classroom.store') }}" method="POST">
+        <form action="{{ route('classroom.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" name="name" id="name" placeholder="name">
@@ -27,9 +27,9 @@
                 <label for="room">room</label>
             </div>
 
+
             <div class=" mb-3">
-                <label for="floatingInput">cover image</label>
-                <input type="file" class="form-control" name="cover_image" id="floatingInput" placeholder="cover image">
+                <input type="file" class="form-control" name="cover_image" id="cover_image" placeholder="Room">
             </div>
 
             <button class="btn btn-primary w-100">Create Classroom</button>

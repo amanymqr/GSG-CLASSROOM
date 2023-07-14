@@ -24,8 +24,9 @@
                 @foreach ($classroom as $classroom)
                     <div class="col-md-4 mb-3">
 
-                        <div class="card" style="width: 18rem;">
-                            {{--  <img src="..." class="card-img-top" alt="...">  --}}
+                        <div class="card" style="width: 18rem; ">
+                            <img src="storage/{{$classroom->cover_image_path}}" class="card-img-top " style="height:100px ; object-fit: cover" alt="...">
+
                             <div class="card-body">
                                 <h5 class="card-title">{{ $classroom->name }}</h5>
                                 <p class="card-text">{{ $classroom->section }}-{{ $classroom->room }}</p>

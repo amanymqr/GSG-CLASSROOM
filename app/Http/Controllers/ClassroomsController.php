@@ -34,6 +34,16 @@ class ClassroomsController extends Controller
         // $classroom->save();//insert
         // return redirect()-> route('classroom.index');
 
+        if($request->hasFile('cover_image')){
+            $file = $request->file('cover_image'); // UploadedFile
+            $path = $file->store('/covers', 'public');
+            //بينشيء ملف داخل الديسك الي أنشاءته
+            $request->merge([
+                'cover_image_path' => $path,
+            ]);
+        }
+
+
         $request->merge([
             'code' => Str::random(8),
         ]);
@@ -51,17 +61,17 @@ class ClassroomsController extends Controller
         ]);
     }
 
-    public function edit(Classroom $classroom)
+    public function edit($id)
     {
-        // $classroom = Classroom::findOrFail($id);
+        $classroom = Classroom::findOrFail($id);
         return view('classroom.edit', [
             'classroom' => $classroom
         ]);
     }
 
-    public function update(Request $request ,Classroom $classroom){
+    public function update(Request $request ,$id){
         //Mass Assigment
-        // $classroom=Classroom::findOrFail($id);
+        $classroom=Classroom::findOrFail($id);
         $classroom->update($request->all());
         return redirect()->route('classroom.index')->with('msg' ,'classroom updated successfully')->with('type', 'primary');
     }

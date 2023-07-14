@@ -28,6 +28,11 @@
                 <label for="room">room</label>
             </div>
 
+
+            {{--  <img src="{{asset('storage/'.$classroom->cover_image_path)}}" alt="...">  --}}
+
+            <img src="{{ Storage::disk('public')->url($classroom->cover_image_path) }}" alt="...">
+
             <div class=" mb-3">
                 <label for="floatingInput">cover image</label>
                 <input type="file" class="form-control"  name="cover_image" id="floatingInput" placeholder="cover image">
