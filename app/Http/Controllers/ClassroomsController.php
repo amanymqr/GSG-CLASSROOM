@@ -69,28 +69,7 @@ class ClassroomsController extends Controller
     }
 //----------------------------------
 
-// public function update(Request $request, $id)
-// {
-//     $classroom = Classroom::findOrFail($id);
 
-//     if ($request->hasFile('cover_image')) {
-//         // Delete the old image file
-//         Storage::delete('public/' . $classroom->cover_image_path);
-
-//         $file = $request->file('cover_image'); // Uploaded File
-//         $img = $file->store('/covers', 'public');
-//     }
-
-//     // Update attributes using mass assignment
-//     $classroom->update(array_merge($request->except('cover_image'), [
-//         'cover_image_path' => $img ?? $classroom->cover_image_path,
-//     ]));
-
-//     return redirect()
-//         ->route('classroom.index')
-//         ->with('msg', 'Classroom updated successfully')
-//         ->with('type', 'success');
-// }
 
 public function update(Request $request, $id)
 {
