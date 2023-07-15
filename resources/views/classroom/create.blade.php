@@ -3,8 +3,21 @@
 @section('title' , 'cretae classrooms')
 @section('content')
 
+
     <div class="container py-5">
+
         <h1>Create Classroom</h1>
+
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
         <form action="{{ route('classroom.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
             <div class="form-floating mb-3">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Classroom;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -23,9 +24,24 @@ class ClassroomsController extends Controller
     {
         return view('classroom.create');
     }
+//-----------------------------
 
     public function store(Request $request)
     {
+    $request->validate([
+        "name" =>'required|max:50 |min:2|string',
+        "section"  =>'nullable|string|max:255',
+        "subject"=>'nullable|string|max:255',
+        "room"=>'nullable|string|max:255',
+        "cover_image" =>[
+            'image',
+            Rule::dimensions([
+                'min_width'  =>200 ,
+                'min_hieght' =>200,
+            ])
+        ]
+
+    ]);
         // dd( $request->all());
         // $classroom =new Classroom();
         // $classroom->name =$request->post('name');
@@ -75,10 +91,12 @@ public function update(Request $request, $id)
 {
     $classroom = Classroom::findOrFail($id);
     if ($request->hasFile('cover_image')) {
-        // Delete the old image file
-
         $file = $request->file('cover_image'); // Uploaded File
         $cover_image = $file->store('/covers', 'public');
+        // $name= $classroom->cover_image??(Str::random(40).'.'.$file->getClientOriginalExtension()) ;
+        // $path=$file->storeAs('/covers',basename($name),[
+        //     'disk'=>'public'
+        // ]);
     }
 
     $classroom->update([

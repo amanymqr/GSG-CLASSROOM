@@ -20,7 +20,9 @@
     <div class="cards-classroom m-4 text-center">
         <div class="container">
             <h1 class="m-5">My Classrooms</h1>
+
             <div class="row">
+
                 @foreach ($classroom as $classroom)
                     <div class="col-md-4 mb-3">
 
@@ -59,6 +61,7 @@
             </div>
 
         </div>
+        <a class="btn btn-primary " href="{{ route('classroom.create') }}">Create Classroom</a>
 
     </div>
 @stop
