@@ -160,14 +160,16 @@ class ClassroomsController extends Controller
     public function destroy($id)
     {
         $classroom = Classroom::find($id);
+        //my solution
+        // if ($classroom->cover_image_path) {
+        //     // Delete the cover image file
+        //     Storage::delete('public/' . $classroom->cover_image_path);
+        // }
 
-        if ($classroom->cover_image_path) {
-            // Delete the cover image file
-            Storage::delete('public/' . $classroom->cover_image_path);
-        }
 
-        Classroom::destroy($id);
-
+        //instructor solution
+        $classroom->delete();
+        Storage::disk('public')->delete($classroom->cover_image_path);
         return redirect()->route('classroom.index')
             ->with('msg', 'Classroom deleted successfully')
             ->with('type', 'danger');
