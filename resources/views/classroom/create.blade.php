@@ -8,52 +8,23 @@
 
         <h1>Create Classroom</h1>
 
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
+@include('partisals.error_validation')
 
         <form action="{{ route('classroom.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control @error('name')
-                    is-invalid
-                @enderror" name="name" value="{{ old('name') }}" id="name" placeholder="name">
-                <label for="name">Name</label>
-                @error('name')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
 
-            <div class="form-floating mb-3">
-                <input  type="text" value="{{ old('section', 'Default') }}" class="form-control"  name="section" id="section" placeholder="section">
-                <label for="section">section</label>
-            </div>
+        @include('classroom._form',[
+            'button_label'=>'create classroom'
+        ])
 
-            <div class="form-floating mb-3">
-                <input type="text" @class(['form-control' , 'is-invalid'=>$errors->has('subject')])
-                class="form-control" name="subject" value="{{ old('subject') }}" id="subject" placeholder="subject">
-                <label for="subject">subject</label>
-            </div>
+        <div class=" mb-3">
+            <input type="file" class="form-control" name="cover_image" id="cover_image" placeholder="Room">
+        </div>
 
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" value="{{ old('room') }}" name="room" id="room" placeholder="room">
-                <label for="room">room</label>
-            </div>
-
-
-            <div class=" mb-3">
-                <input type="file" class="form-control" name="cover_image" id="cover_image" placeholder="Room">
-            </div>
 
             <button class="btn btn-primary w-100">Create Classroom</button>
         </form>
 
     </div>
-
 @stop
+{{--  @class(['form-control', 'is-invalid'=>$errors->has('name')])  --}}

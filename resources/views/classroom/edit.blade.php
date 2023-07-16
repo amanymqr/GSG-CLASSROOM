@@ -1,59 +1,34 @@
 @extends('layouts.master')
-@section('title' , 'edit classrooms' .$classroom->name)
+@section('title', 'edit classrooms' . $classroom->name)
 
 @section('content')
 
 
     <div class="container py-5">
-
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
-
+        @include('partisals.error_validation')
 
         <h1 class="text-center">Update Classroom</h1>
-        <form action="{{ route('classroom.update' , $classroom->id) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('put')
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" value="{{ $classroom->name }}" name="name" id="name" placeholder="name">
-                <label for="name">Name</label>
-            </div>
-
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" value="{{ $classroom->section }}" name="section" id="section" placeholder="section">
-                <label for="section">section</label>
-            </div>
-
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" value="{{ $classroom->subject }}" name="subject" id="subject" placeholder="subject">
-                <label for="subject">subject</label>
-            </div>
-
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" value="{{ $classroom->room }}" name="room" id="room" placeholder="room">
-                <label for="room">room</label>
-            </div>
+        <form action="{{ route('classroom.update', $classroom->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('put')
 
 
-            <img src="{{asset('storage/'.$classroom->cover_image_path)}}" alt="...">
 
-            {{--  <img src="{{ Storage::disk('public')->url($classroom->cover_image_path) }}" alt="...">  --}}
+            @include('classroom._form');
+            {{--  ,[
+            'button_label'=>'edit classroom']  --}}
 
+
+            <img src="{{ asset('storage/' . $classroom->cover_image_path) }}" alt="...">
             <div class=" mb-3">
                 <label for="floatingInput">cover image</label>
-                <input type="file" class="form-control"  name="cover_image" id="floatingInput" placeholder="cover image">
+                <input type="file" class="form-control" name="cover_image" id="floatingInput" placeholder="cover image">
             </div>
+
 
             <button class="btn btn-primary w-100">update</button>
         </form>
 
     </div>
 @stop
-    {{--  @include('partisals.footer')  --}}
+{{--  @include('partisals.footer')  --}}

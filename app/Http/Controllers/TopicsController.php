@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Topic;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Redirect;
 
 class TopicsController extends Controller
@@ -23,6 +24,9 @@ class TopicsController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'name' =>'required|max:250',]
+        );
         $topic = new Topic();
         $topic->name = $request->post('name');
         $topic->save();
@@ -49,6 +53,13 @@ class TopicsController extends Controller
     public function update(Request $request, $id)
     {
         $topic = Topic::findOrFail($id);
+        $request->validate([
+            'name' => [
+                'required',
+                'max:255',
+                Rule::unique('topics')->ignore($topic->id),
+            ],
+        ]);
         $topic->update($request->all());
         return Redirect::route('topics.index');
     }
