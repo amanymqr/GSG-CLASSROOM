@@ -21,22 +21,28 @@
         <form action="{{ route('classroom.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="name" id="name" placeholder="name">
+                <input type="text" class="form-control @error('name')
+                    is-invalid
+                @enderror" name="name" value="{{ old('name') }}" id="name" placeholder="name">
                 <label for="name">Name</label>
+                @error('name')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="section" id="section" placeholder="section">
+                <input  type="text" value="{{ old('section', 'Default') }}" class="form-control"  name="section" id="section" placeholder="section">
                 <label for="section">section</label>
             </div>
 
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="subject" id="subject" placeholder="subject">
+                <input type="text" @class(['form-control' , 'is-invalid'=>$errors->has('subject')])
+                class="form-control" name="subject" value="{{ old('subject') }}" id="subject" placeholder="subject">
                 <label for="subject">subject</label>
             </div>
 
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="room" id="room" placeholder="room">
+                <input type="text" class="form-control" value="{{ old('room') }}" name="room" id="room" placeholder="room">
                 <label for="room">room</label>
             </div>
 
