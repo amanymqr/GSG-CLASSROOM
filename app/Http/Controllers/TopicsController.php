@@ -12,7 +12,8 @@ class TopicsController extends Controller
     public function index(Request $request)
     {
         $topics = Topic::orderBy('name','DESC')->get();
-        return view('topics.index', compact('topics'));
+        return view('topics.index', compact('topics'))->with('sucsess', 'topic created');
+
     }
 
 
@@ -30,7 +31,7 @@ class TopicsController extends Controller
         $topic = new Topic();
         $topic->name = $request->post('name');
         $topic->save();
-        return redirect()->route('topics.index');
+        return redirect()->route('topics.index')->with('msg', 'topic craeted successfully')->with('type', 'success');
     }
 
 
@@ -54,6 +55,10 @@ class TopicsController extends Controller
     {
         $topic = Topic::findOrFail($id);
         $request->validate([
+            'name' => 'required'
+        ]);
+
+        $request->validate([
             'name' => [
                 'required',
                 'max:255',
@@ -61,7 +66,8 @@ class TopicsController extends Controller
             ],
         ]);
         $topic->update($request->all());
-        return Redirect::route('topics.index');
+        return Redirect::route('topics.index')->with('msg', 'topic updated successfully')
+        ->with('type', 'info');
     }
 
 

@@ -1,6 +1,7 @@
 @include('partisals.header')
 
 <div class="container">
+@include('partisals.flash_msg')
 
     <h1 class="text-center my-4">Topics</h1>
     <a href="{{ route('topics.create') }}" class="btn btn-primary w-100">Create Topics <i class="fa-solid fa-plus"></i></a>

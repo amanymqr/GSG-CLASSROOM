@@ -23,12 +23,10 @@ class ClassroomsController extends Controller
     //---------------------------------------------------------------------------
     public function create()
     {
-        return view('classroom.create',[
-            'classroom'=>new Classroom(),
+        return view('classroom.create', [
+            'classroom' => new Classroom(),
         ]);
     }
-
-
     //---------------------------------------------------------------------------
 
     public function store(Request $request)
@@ -76,6 +74,7 @@ class ClassroomsController extends Controller
     }
 
 
+
     //---------------------------------------------------------------------------
 
 
@@ -104,13 +103,27 @@ class ClassroomsController extends Controller
     public function update(Request $request, $id)
     {
         $classroom = Classroom::findOrFail($id);
-        $validated=$request->validate([
+        $rules = [
             "name" => 'required|max:50 |min:2|string',
             "section"  => 'nullable|string|max:255',
             "subject" => 'nullable|string|max:255',
             "room" => 'nullable|string|max:255',
-        ]);
-
+            "cover_image" => [
+                'nullable',
+                'image',
+                Rule::dimensions([
+                    'min_width'  => 200,
+                    'min_hieght' => 200,
+                ])
+            ]
+        ];
+        //customization messages
+        $messages = [
+            'required'    => ':attribute This field is imporatnt.',
+            // 'name.required'    => 'name is imporatnt.',
+            // 'max'       =>'size is large'
+        ];
+        $validated = $request->validate($rules, $messages);
         //my solution
         // if ($request->hasFile('cover_image')) {
         //     // Delete the old image file
@@ -130,27 +143,21 @@ class ClassroomsController extends Controller
         //solution1
         if ($request->hasFile('cover_image')) {
             $file = $request->file('cover_image'); // UploadedFile
-        //solution1
+            //solution1
             // $name = $classroom->cover_image_path ?? (Str::length(40) . '.' . $file->getClientOriginalExtension());
             // $path = $file->storeAS('/covers', basename($name), [
             //     'disk' => 'public'
             // ]);
 
 
-
-        //solution2
-        // $path = $file->store('/covers', [
-        //     'disk' => Classroom::$disk,
-        // ]);
-        //instead of
-        $path=Classroom::uploadCoverImage($file);
-        // $request->merge([
-        //     'cover_image_path' => $path,
-        //     // update image value
-        // ]);
-        $validated['cover_image_path']= $path;
-
-    }
+            //solution2
+            // $path = $file->store('/covers', [
+            //     'disk' => Classroom::$disk,
+            // ]);
+            //instead of
+            $path = Classroom::uploadCoverImage($file);
+            $validated['cover_image_path'] = $path;
+        }
         $old = $classroom->cover_image_path;
         $classroom->update($validated);
 
@@ -175,13 +182,12 @@ class ClassroomsController extends Controller
         //     Storage::delete('public/' . $classroom->cover_image_path);
         // }
         //instructor solution
-            $classroom->delete();
-            if (File::exists($classroom->cover_image_path)) {
-                Classroom::deleteCoverImage($classroom->cover_image_path);
-            }
-            return redirect()->route('classroom.index')
+        $classroom->delete();
+        if (File::exists($classroom->cover_image_path)) {
+            Classroom::deleteCoverImage($classroom->cover_image_path);
+        }
+        return redirect()->route('classroom.index')
             ->with('msg', 'Classroom deleted successfully')
             ->with('type', 'danger');
-
     }
 };
