@@ -19,9 +19,10 @@ class TopicsController extends Controller
 
     public function create(Request $request)
     {
-        return view('topics.create');
+        return view('topics.create', [
+            'topic' => new Topic(),
+        ]);
     }
-
 
     public function store(Request $request)
     {

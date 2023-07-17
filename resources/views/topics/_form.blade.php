@@ -8,3 +8,5 @@
     <small class="text-danger">{{ $message }}</small>
     @enderror
 </div>
+
+<button type="submit" class="btn btn-success w-100 my-4">{{ $btn }}</button>

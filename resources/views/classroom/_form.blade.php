@@ -34,17 +34,13 @@
     @enderror
 </div>
 
-{{--  <div class="form-floating mb-3">
+<div class=" mb-3">
     @if ($classroom->cover_image_path)
-        <img style="max-width: 100%" src="{{ Storage::disk('public')->url($classroom->cover_image_path) }}"
-            alt="">
+        <img style="width: 100%; height: 120px;object-fit: cover;"
+            src="{{ asset('storage/' . $classroom->cover_image_path) }}" alt="...">
     @endif
-    <input type="file" class="form-control @error('cover_image')is-invalid @enderror" name="cover_image"
-        id="cover_image" placeholder="Room">
     <label for="cover_image">Cover image</label>
-    @error('cover_image')
-        <small class="text-danger">{{ $message }}</small>
-    @enderror
-</div>  --}}
+    <input type="file" class="form-control" name="cover_image" id="cover_image" placeholder="Room">
+</div>
 
-{{--  <button type="submit" class="btn btn-primary w-100">{{ $button_label }}</button>  --}}
+<button type="submit" class="btn btn-primary w-100">{{ $button_label }}</button>

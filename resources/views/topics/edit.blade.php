@@ -8,8 +8,9 @@
     <form action="{{ route('topics.update', $topic->id) }}" method="POST">
         @csrf
         @method('put')
-@include('topics._form')
-        <button type="submit" class="btn btn-primary">Update Topic</button>
+        @include('topics._form',[
+            'btn'=>'Edit Topic'])
+        {{--  <button type="submit" class="btn btn-primary">Update Topic</button>  --}}
 
     </form>
 </div>

@@ -14,19 +14,19 @@
 
 
 
-            @include('classroom._form');
-            {{--  ,[
-            'button_label'=>'edit classroom']  --}}
+            @include('classroom._form',[
+                'button_label'=>'edit classroom'] )
 
 
-            <img src="{{ asset('storage/' . $classroom->cover_image_path) }}" alt="...">
+
+            {{--  <img src="{{ asset('storage/' . $classroom->cover_image_path) }}" alt="...">
             <div class=" mb-3">
                 <label for="floatingInput">cover image</label>
                 <input type="file" class="form-control" name="cover_image" id="floatingInput" placeholder="cover image">
-            </div>
+            </div>  --}}
 
 
-            <button class="btn btn-primary w-100">update</button>
+            {{--  <button class="btn btn-primary w-100">update</button>  --}}
         </form>
 
     </div>

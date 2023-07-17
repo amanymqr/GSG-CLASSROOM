@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title' , 'cretae classrooms')
+@section('title', 'cretae classrooms')
 @section('content')
 
 
@@ -8,21 +8,20 @@
 
         <h1>Create Classroom</h1>
 
-@include('partisals.error_validation')
+        @include('partisals.error_validation')
 
         <form action="{{ route('classroom.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
+            @csrf
 
-        @include('classroom._form',[
-            'button_label'=>'create classroom'
-        ])
+            @include('classroom._form', [
+                'button_label' => 'create classroom',
+            ])
 
-        <div class=" mb-3">
-            <input type="file" class="form-control" name="cover_image" id="cover_image" placeholder="Room">
-        </div>
+            {{--  <div class=" mb-3">
+                <input type="file" class="form-control" name="cover_image" id="cover_image" placeholder="Room">
+            </div>  --}}
+            {{--  <button class="btn btn-primary w-100">Create Classroom</button>  --}}
 
-
-            <button class="btn btn-primary w-100">Create Classroom</button>
         </form>
 
     </div>

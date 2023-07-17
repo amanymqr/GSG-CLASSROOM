@@ -5,10 +5,11 @@
 
     <form action="{{ route('topics.store') }}" method="POST">
         @csrf
-        @include('topics._form')
+        @include('topics._form',[
+            'btn'=>'Create Topic'
+        ])
 
 
-        <button type="submit" class="btn btn-success w-100 my-4">Create Topic</button>
 
     </form>
 </div>
