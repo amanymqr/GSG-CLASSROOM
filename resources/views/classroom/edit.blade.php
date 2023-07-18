@@ -5,8 +5,7 @@
 
 
     <div class="container py-5">
-        @include('partisals.error_validation')
-
+        <x-block-error />
         <h1 class="text-center">Update Classroom</h1>
         <form action="{{ route('classroom.update', $classroom->id) }}" method="POST" enctype="multipart/form-data">
             @csrf

@@ -1,8 +1,7 @@
 @include('partisals.header')
 
 <div class="container">
-    @include('partisals.flash_msg')
-
+    <x-block-error />
     <h1>Edit Topic</h1>
 
     <form action="{{ route('topics.update', $topic->id) }}" method="POST">

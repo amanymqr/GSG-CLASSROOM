@@ -7,8 +7,7 @@
     <div class="container py-5">
 
         <h1>Create Classroom</h1>
-
-        @include('partisals.error_validation')
+        <x-block-error />
 
         <form action="{{ route('classroom.store') }}" method="POST" enctype="multipart/form-data">
             @csrf

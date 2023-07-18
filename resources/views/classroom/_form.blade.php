@@ -1,37 +1,33 @@
 <div class="form-floating mb-3">
-    <input type="text" value="{{ old('name', $classroom->name) }}"
-        class="form-control @error('name')is-invalid @enderror" name="name" id="name" placeholder="Class Name">
-    <label for="name">Class Name</label>
-    @error('name')
-        <small class="invalid-feedback">{{ $message }}</small>
-    @enderror
+    <x-form.input name="name" value="{{ $classroom->name }}" placeholder="Classroon Name" class="form-control" />
+    <label for="name">classroom name</label>
+    <x-single-error name="name" />
+</div>
+
+
+<div class="form-floating mb-3">
+    <x-form.input name="section" value="{{ $classroom->section }}" placeholder="Classroon Section" />
+    <label for="name">classroom section</label>
+    <x-single-error name="section" />
+</div>
+
+
+<div class="form-floating mb-3">
+    <x-form.input name="subject" value="{{ $classroom->subject }}" placeholder="Classroon Subject" />
+    <label for="name">classroom subject</label>
+    <x-single-error name="subject" />
 </div>
 
 <div class="form-floating mb-3">
-    <input type="text" value="{{ old('section', $classroom->section) }}"
-        class="form-control @error('section')is-invalid @enderror" name="section" id="section" placeholder="Section">
-    <label for="section">Section</label>
-    @error('section')
-        <small class="text-danger">{{ $message }}</small>
-    @enderror
-</div>
 
-<div class="form-floating mb-3">
-    <input type="text" value="{{ old('subject', $classroom->subject) }}"
-        class="form-control @error('subject')is-invalid @enderror" name="subject" id="subject" placeholder="Subject">
-    <label for="subject">Subject</label>
-    @error('subject')
-        <small class="text-danger">{{ $message }}</small>
-    @enderror
-</div>
+    <x-form.input name="room" value="{{ $classroom->room }}" placeholder="Classroon Room" />
+    <label for="name">classroom room</label>
+    <x-single-error name="room" />
 
-<div class="form-floating mb-3">
-    <input type="text" value="{{ old('room', $classroom->room) }}"
+    {{--  <input type="text" value="{{ old('room', $classroom->room) }}"
         class="form-control @error('room')is-invalid @enderror" name="room" id="room" placeholder="Room">
     <label for="room">Room</label>
-    @error('room')
-        <small class="text-danger">{{ $message }}</small>
-    @enderror
+    <x-single-error name="room" />  --}}
 </div>
 
 <div class=" mb-3">
@@ -39,8 +35,10 @@
         <img style="width: 100%; height: 120px;object-fit: cover;"
             src="{{ asset('storage/' . $classroom->cover_image_path) }}" alt="...">
     @endif
-    <label for="cover_image">Cover image</label>
-    <input type="file" class="form-control" name="cover_image" id="cover_image" placeholder="Room">
+    <label for="name">classroom cover image</label>
+    <x-form.input type="file" name="cover_image" value="{{ $classroom->cover_image }}" placeholder="Classroon Cover Image" />
+    <x-single-error name="cover_image" />
+
 </div>
 
 <button type="submit" class="btn btn-primary w-100">{{ $button_label }}</button>
