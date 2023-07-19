@@ -66,6 +66,7 @@ class ClassroomsController extends Controller
             $validated['cover_image_path']= $path;
         }
 
+
         $request->merge([
             'code' => Str::random(8),
         ]);

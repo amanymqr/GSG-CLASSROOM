@@ -46,8 +46,9 @@ class ClassroomRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'required' => ':attribute Important!',
+            // 'required' => ':attribute Important!',
             'name.required' => 'The Name Is Required',
+            // 'section.required' => 'The Name Is Required',
             'cover_image.max' => 'Image size is greater than 1M'
         ];
     }
