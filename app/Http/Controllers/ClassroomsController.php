@@ -10,6 +10,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use PhpParser\Builder\Class_;
 
 class ClassroomsController extends Controller
 {
@@ -63,7 +64,7 @@ class ClassroomsController extends Controller
             $request->merge([
                 'cover_image_path' => $path,
             ]);
-            $validated['cover_image_path']= $path;
+            $validated['cover_image_path'] = $path;
         }
 
 
@@ -138,11 +139,40 @@ class ClassroomsController extends Controller
         // }
         //instructor solution
         $classroom->delete();
-        if (File::exists($classroom->cover_image_path)) {
-            Classroom::deleteCoverImage($classroom->cover_image_path);
-        }
+        // if (File::exists($classroom->cover_image_path)) {
+        //     Classroom::deleteCoverImage($classroom->cover_image_path);
+        // }
         return redirect()->route('classroom.index')
             ->with('msg', 'Classroom deleted successfully')
             ->with('type', 'danger');
     }
-};
+
+    public function trashed()
+    {
+        $classroom = Classroom::onlyTrashed()
+            ->latest('deleted_at')
+            ->get();
+        return view('classroom.trashed', compact('classroom'));
+    }
+
+    public function restore($id)
+    {
+        $classroom = Classroom::onlyTrashed()->findOrFail($id);
+        $classroom->restore();
+        return redirect()->route('classroom.index')
+            ->with('msg', "Classroom ({$classroom->name}) restore successfully")
+            ->with('type', 'info');
+    }
+
+    public function forceDelete($id)
+    {
+        $classroom = Classroom::withTrashed()->findOrFail($id);
+        $classroom->forceDelete();
+
+        Classroom::deleteCoverImage($classroom->cover_image_path);
+        return redirect()->route('classroom.index')
+            ->with('msg', "Classroom ({$classroom->name}) restore successfully")
+            ->with('type', 'success');
+
+    }
+}

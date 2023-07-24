@@ -3,9 +3,9 @@
 <div class="container">
 @include('partisals.flash_msg')
 
-    <h1 class="text-center my-4">Topics</h1>
-    <a href="{{ route('topics.create') }}" class="btn btn-primary w-100">Create Topics <i class="fa-solid fa-plus"></i></a>
-    <div class="col my-5">
+    <h1 class="text-center my-4"> Trashed Topics</h1>
+    {{--  <a href="{{ route('topics.create') }}" class="btn btn-primary w-100">Create Topics <i class="fa-solid fa-plus"></i></a>
+    <div class="col my-5">  --}}
 
 
 
@@ -18,12 +18,18 @@
                 </div>
                 <div class="col-md-3">
                     <div class="btn-group">
-                        <a class="btn btn-sm btn-primary mx-2" href="{{ route('topics.show', $topics->id) }}">show</a>
-                        <a class="btn btn-sm btn-info mx-2 text-white" href="{{ route('topics.edit', $topics->id) }}">edit</a>
+
+                        {{--  <a class="btn btn-sm btn-info mx-2 text-white" href="{{ route('topics.edit', $topics->id) }}">edit</a>  --}}
+                        <form action="{{ route('topics.restore', $topics->id) }}" method="post">
+                            @csrf
+                            @method('put')
+                            <button class="btn btn-sm btn-secondary mx-2 ">Restore</button>
+                        </form>
+
                         <form action="{{ route('topics.destroy', $topics->id) }}" method="post">
                             @csrf
                             @method('delete')
-                            <button class="btn btn-sm btn-danger">Delete</button>
+                            <button class="btn btn-sm btn-danger">Delete Forever</button>
                         </form>
                     </div>
                 </div>

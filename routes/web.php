@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TopicsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ClassroomsController;
+use App\Models\Classroom;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,15 +39,33 @@ Route::get('/', function () {
 
 require __DIR__ . '/auth.php';
 
+Route::middleware(['auth'])->group(function () {
+    Route::prefix('/classroom/trashed')
+        ->as('classroom.')
+        ->controller(ClassroomsController::class)
+        ->group(function () {
+            Route::get('/',  'trashed')->name('trashed');
+            Route::put('/{classroom}',  'restore')->name('restore');
+            Route::delete('/{classroom}',  'forceDelete')->name('force-delete');
+        });
+
+    Route::prefix('/topics/trashed')
+        ->as('topics.')
+        ->controller(TopicsController::class)
+        ->group(function () {
+            Route::get('/',  'trashed')->name('trashed');
+            Route::put('/{topics}',  'restore')->name('restore');
+            Route::delete('/{topics}',  'forceDelete')->name('force-delete');
+        });
+
+
+    Route::resources([
+        'classroom' => ClassroomsController::class,
+        'topics' => TopicsController::class,
+    ]);
+});
 
 
 //  Routs
 // Route::resource('/classroom', ClassroomsController::class);
 // Route::resource('/topics', TopicsController::class);
-
-Route::resources ( [
-    'classroom' => ClassroomsController::class,
-    'topics' => TopicsController::class,
-    ], [
-    'middleware' => ['auth']
-    ]);

@@ -12,7 +12,7 @@ class TopicsController extends Controller
     public function index(Request $request)
     {
         $topics = Topic::orderBy('name','DESC')->get();
-        return view('topics.index', compact('topics'))->with('sucsess', 'topic created');
+        return view('topics.index', compact('topics'))->with('sucsess', 'topics created');
 
     }
 
@@ -20,7 +20,7 @@ class TopicsController extends Controller
     public function create(Request $request)
     {
         return view('topics.create', [
-            'topic' => new Topic(),
+            'topics' => new Topic(),
         ]);
     }
 
@@ -29,32 +29,32 @@ class TopicsController extends Controller
         $request->validate([
             'name' =>'required|max:250',]
         );
-        $topic = new Topic();
-        $topic->name = $request->post('name');
-        $topic->save();
-        return redirect()->route('topics.index')->with('msg', 'topic craeted successfully')->with('type', 'success');
+        $topics = new Topic();
+        $topics->name = $request->post('name');
+        $topics->save();
+        return redirect()->route('topics.index')->with('msg', 'topics craeted successfully')->with('type', 'success');
     }
 
 
     public function show($id)
     {
-        $topic = Topic::findOrFail($id);
-        return view('topics.show', compact('topic'));
+        $topics = Topic::findOrFail($id);
+        return view('topics.show', compact('topics'));
     }
 
 
 
     public function edit($id)
     {
-        $topic = Topic::findOrFail($id);
-        return view('topics.edit', compact('topic'));
+        $topics = Topic::findOrFail($id);
+        return view('topics.edit', compact('topics'));
     }
 
 
 
     public function update(Request $request, $id)
     {
-        $topic = Topic::findOrFail($id);
+        $topics = Topic::findOrFail($id);
         $request->validate([
             'name' => 'required'
         ]);
@@ -63,11 +63,11 @@ class TopicsController extends Controller
             'name' => [
                 'required',
                 'max:255',
-                Rule::unique('topics')->ignore($topic->id),
+                Rule::unique('topics')->ignore($topics->id),
             ],
         ]);
-        $topic->update($request->all());
-        return Redirect::route('topics.index')->with('msg', 'topic updated successfully')
+        $topics->update($request->all());
+        return Redirect::route('topics.index')->with('msg', 'topics updated successfully')
         ->with('type', 'info');
     }
 
@@ -75,8 +75,38 @@ class TopicsController extends Controller
 
     public function destroy($id)
     {
-        $topic = Topic::findOrFail($id);
-        $topic->destroy($id);
+        $topics = Topic::findOrFail($id);
+        $topics->destroy($id);
         return redirect(route('topics.index'));
+    }
+
+
+
+    public function trashed()
+    {
+        $topics = Topic::onlyTrashed()
+            ->latest('deleted_at')
+            ->get();
+        return view('topics.trashed', compact('topics'));
+    }
+
+    public function restore($id)
+    {
+        $topics = Topic::onlyTrashed()->findOrFail($id);
+        $topics->restore();
+        return redirect()->route('topics.index')
+            ->with('msg', "topics ({$topics->name}) restore successfully")
+            ->with('type', 'info');
+    }
+
+    public function forceDelete($id)
+    {
+        $topics = Topic::withTrashed()->findOrFail($id);
+        $topics->forceDelete();
+
+        return redirect()->route('topics.index')
+            ->with('msg', "topics ({$topics->name}) restore successfully")
+            ->with('type', 'success');
+
     }
 }
