@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -43,4 +44,9 @@ if($path || Storage::disk(Classroom::$disk)->exists($path)){
 }
 
 }
+
+//local scope
+// public function scopActive(Builder $quary)  {
+//     $quary->where('status', '=' , 'active')
+// }
 }

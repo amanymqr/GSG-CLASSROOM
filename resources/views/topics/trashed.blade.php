@@ -26,7 +26,7 @@
                             <button class="btn btn-sm btn-secondary mx-2 ">Restore</button>
                         </form>
 
-                        <form action="{{ route('topics.destroy', $topics->id) }}" method="post">
+                        <form action="{{ route('topics.force-delete', $topics->id) }}" method="post">
                             @csrf
                             @method('delete')
                             <button class="btn btn-sm btn-danger">Delete Forever</button>
