@@ -6,6 +6,7 @@
 
 
 
+
 <div class="cards-classroom m-4 text-center">
     <div class="container">
         <h1 class="m-5">Trashed Classrooms</h1>

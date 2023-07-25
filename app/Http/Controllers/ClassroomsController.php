@@ -2,25 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ClassroomRequest;
 use App\Models\Classroom;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use PhpParser\Builder\Class_;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use App\Http\Requests\ClassroomRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
-use PhpParser\Builder\Class_;
 
 class ClassroomsController extends Controller
 {
 
     public function index()
     {
-        //return response/redirect/json data/file/string
-        $classroom = Classroom::orderBy('id', 'DESC')->get(); //collection
-        // session('sucsess');
-        return view('classroom.index', compact('classroom'))->with('sucsess', 'Classroom created');
+        $classroom = Classroom::active()
+            ->recent()
+            ->get();
+        return view(' classroom.index', compact('classroom'))->with('sucsess', 'Classroom created');
     }
     //---------------------------------------------------------------------------
     public function create()
@@ -71,6 +72,7 @@ class ClassroomsController extends Controller
         $request->merge([
             'code' => Str::random(8),
         ]);
+        $validated['user_id']= Auth::id();
         $validated = $request->validated();
 
         $classroom = Classroom::create($request->all());
@@ -173,6 +175,5 @@ class ClassroomsController extends Controller
         return redirect()->route('classroom.index')
             ->with('msg', "Classroom ({$classroom->name}) restore successfully")
             ->with('type', 'success');
-
     }
 }
