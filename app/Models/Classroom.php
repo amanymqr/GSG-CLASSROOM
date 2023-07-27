@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Scopes\UserClassroomScope;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Classroom extends Model
 {
@@ -30,14 +31,15 @@ class Classroom extends Model
     //global scope
     protected static function booted()
     {
-        static::addGlobalScope('user' , function(Builder $query){
-            $query->where('user_id' , '=' , Auth::id());
-        });
+        // static::addGlobalScope('user' , function(Builder $query){
+        //     $query->where('user_id' , '=' , Auth::id());
+        // });
+        static::addGlobalScope(new UserClassroomScope);
     }
     //change the route key name from id to code
     public function getRouteKeyName()
     {
-        return 'code';
+        return 'id';
     }
 
     public static function  uploadCoverImage($file)

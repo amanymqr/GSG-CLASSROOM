@@ -15,7 +15,7 @@
             <p class="card-text">{{ $classroom->section }}-{{ $classroom->room }}</p>
 
             <div class="text-center">
-                <a href="{{ route('classroom.show', $classroom->code) }}" class="btn btn-primary btn-sm mr-2">View</a>
+                <a href="{{ route('classroom.show', $classroom->id) }}" class="btn btn-primary btn-sm mr-2">View</a>
 
                 <a href="{{ route('classroom.edit', $classroom->id) }}" class="btn btn-success btn-sm text-white mr-2">Update</a>
 

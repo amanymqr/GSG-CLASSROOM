@@ -1,10 +1,11 @@
 <?php
 
+use App\Models\Classroom;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TopicsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ClassroomsController;
-use App\Models\Classroom;
+use App\Http\Controllers\JoinClassroomController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,8 @@ Route::get('/', function () {
 require __DIR__ . '/auth.php';
 
 Route::middleware(['auth'])->group(function () {
+
+    //soft delete classroom
     Route::prefix('/classroom/trashed')
         ->as('classroom.')
         ->controller(ClassroomsController::class)
@@ -49,6 +52,7 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{classroom}',  'forceDelete')->name('force-delete');
         });
 
+    //soft delete topic
     Route::prefix('/topics/trashed')
         ->as('topics.')
         ->controller(TopicsController::class)
@@ -58,14 +62,16 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{topics}',  'forceDelete')->name('force-delete');
         });
 
+    //join classroom
+    Route::get('/classroom/{classroom}/join', [JoinClassroomController::class, 'create'])->name('classroom.join');
+    Route::post('/classroom/{classroom}/join', [JoinClassroomController::class, 'store']);
 
+
+
+
+    //resources
     Route::resources([
         'classroom' => ClassroomsController::class,
         'topics' => TopicsController::class,
     ]);
 });
-
-
-//  Routs
-// Route::resource('/classroom', ClassroomsController::class);
-// Route::resource('/topics', TopicsController::class);

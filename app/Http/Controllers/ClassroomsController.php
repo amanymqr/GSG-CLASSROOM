@@ -20,6 +20,7 @@ class ClassroomsController extends Controller
     {
         $classroom = Classroom::active()
             ->recent()
+            // ->withoutGlobalScopes()
             ->get();
         return view(' classroom.index', compact('classroom'))->with('sucsess', 'Classroom created');
     }
@@ -84,9 +85,9 @@ class ClassroomsController extends Controller
     //---------------------------------------------------------------------------
 
 
-    public function show(Classroom $classroom)
+    public function show( $id)
     {
-        // $classroom = Classroom::findOrFail($id);
+        $classroom = Classroom::findOrFail($id);
         return view('classroom.show', [
             'classroom' => $classroom,
         ]);
