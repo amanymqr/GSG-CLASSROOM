@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -76,4 +77,12 @@ class Classroom extends Model
         $query->where('status', '=', $status);
 
     }
+public function join($user_id , $role='student'){
+    DB::table('classroom_user')->insert([
+        'classroom_id' => $this->id,
+        'user_id' => $user_id,
+        'role' => $role,
+        'created_at' => now(),
+    ]);
+}
 }

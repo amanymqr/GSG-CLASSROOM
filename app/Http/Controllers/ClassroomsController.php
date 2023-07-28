@@ -7,10 +7,13 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use PhpParser\Builder\Class_;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\Http\Requests\ClassroomRequest;
+use Exception;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
 
 class ClassroomsController extends Controller
@@ -35,29 +38,7 @@ class ClassroomsController extends Controller
 
     public function store(ClassroomRequest  $request)
     {
-        // $request->validate([
-        //     "name" => 'required|max:50 |min:2|string',
-        //     "section"  => 'nullable|string|max:255',
-        //     "subject" => 'nullable|string|max:255',
-        //     "room" => 'nullable|string|max:255',
-        //     "cover_image" => [
-        //         'nullable',
-        //         'image',
-        //         Rule::dimensions([
-        //             'min_width'  => 200,
-        //             'min_hieght' => 200,
-        //         ])
-        //     ]
-        // ]);
 
-        // $classroom =new Classroom();
-        // $classroom->name =$request->post('name');
-        // $classroom->section =$request->post('section');
-        // $classroom->subject =$request->post('subject');
-        // $classroom->room =$request->post('room');
-        // $classroom->code =Str::random(8);
-        // $classroom->save();//insert
-        // return redirect()-> route('classroom.index');
 
         if ($request->hasFile('cover_image')) {
             $file = $request->file('cover_image'); // UploadedFile
@@ -73,10 +54,19 @@ class ClassroomsController extends Controller
         $request->merge([
             'code' => Str::random(8),
         ]);
-        $validated['user_id']= Auth::id();
+        $validated['user_id'] = Auth::id();
         $validated = $request->validated();
+        DB::beginTransaction();
+        try {
+            $classroom = Classroom::create($request->all());
+            //when create  classroom the role is teacher
+            $classroom->join( Auth::id(),'teacher');
 
-        $classroom = Classroom::create($request->all());
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            return back()->with('error', $e->getMessage())->withInput();
+        }
         return redirect()->route('classroom.index')->with('msg', 'classroom craeted successfully')->with('type', 'success');
     }
 
@@ -85,11 +75,17 @@ class ClassroomsController extends Controller
     //---------------------------------------------------------------------------
 
 
-    public function show( $id)
+    public function show( Classroom $classroom)
     {
-        $classroom = Classroom::findOrFail($id);
+        // $classroom = Classroom::findOrFail($id);
+        $invitation_link= URL::temporarySignedRoute('classroom.join', now()->addHours(3) , [
+            'classroom'=>$classroom->id,
+            'code'=>$classroom->id,
+        ]);
         return view('classroom.show', [
             'classroom' => $classroom,
+            'invitation_link'=>$invitation_link,
+
         ]);
     }
 
@@ -101,7 +97,7 @@ class ClassroomsController extends Controller
     {
         $classroom = Classroom::findOrFail($id);
         return view('classroom.edit', [
-            'classroom' => $classroom
+            'classroom' => $classroom,
         ]);
     }
 
@@ -135,20 +131,14 @@ class ClassroomsController extends Controller
     public function destroy($id)
     {
         $classroom = Classroom::find($id);
-        //my solution
-        // if ($classroom->cover_image_path) {
-        //     // Delete the cover image file
-        //     Storage::delete('public/' . $classroom->cover_image_path);
-        // }
-        //instructor solution
         $classroom->delete();
-        // if (File::exists($classroom->cover_image_path)) {
-        //     Classroom::deleteCoverImage($classroom->cover_image_path);
-        // }
         return redirect()->route('classroom.index')
             ->with('msg', 'Classroom deleted successfully')
             ->with('type', 'danger');
     }
+
+
+    //---------------------------------------------------------------------------
 
     public function trashed()
     {

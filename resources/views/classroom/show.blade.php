@@ -17,7 +17,10 @@
                 </div>
             </div>
             <div class="col-md-9">
-
+                <p>
+                    invitation link
+                    <a href="{{ $invitation_link }}">{{ $invitation_link }}</a>
+                </p>
             </div>
         </div>
     </div>

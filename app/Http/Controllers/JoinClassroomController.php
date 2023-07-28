@@ -41,12 +41,7 @@ class JoinClassroomController extends Controller
         } catch (Exception $e) {
             return redirect()->route('classroom.show', $id);
         }
-        DB::table('classroom_user')->insert([
-            'classroom_id' => $classroom->id,
-            'user_id' => Auth::id(),
-            'role' => $request->input('role', 'student'),
-            'created_at'=>now(),
-        ]);
+        $classroom->join( Auth::id(), $request->input('role', 'student'));
         return view('classroom.join', compact('classroom'));
 
 

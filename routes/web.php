@@ -63,7 +63,9 @@ Route::middleware(['auth'])->group(function () {
         });
 
     //join classroom
-    Route::get('/classroom/{classroom}/join', [JoinClassroomController::class, 'create'])->name('classroom.join');
+    Route::get('/classroom/{classroom}/join', [JoinClassroomController::class, 'create'])
+        ->middleware('signed')
+        ->name('classroom.join');
     Route::post('/classroom/{classroom}/join', [JoinClassroomController::class, 'store']);
 
 
