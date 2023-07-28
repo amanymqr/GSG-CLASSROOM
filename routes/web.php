@@ -69,11 +69,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/classroom/{classroom}/join', [JoinClassroomController::class, 'store']);
 
 
-
-
     //resources
-    Route::resources([
-        'classroom' => ClassroomsController::class,
-        'topics' => TopicsController::class,
-    ]);
+
+    Route::resources(['classroom' => ClassroomsController::class,]);
+    Route::resources(['classroom.topics' => TopicsController::class,]);
 });

@@ -9,22 +9,23 @@ use Illuminate\Support\Facades\Redirect;
 
 class TopicsController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request , $classroom)
     {
-        $topics = Topic::orderBy('name','DESC')->get();
+        $topics = Topic::where('classroom_id' , '=' , $classroom)->orderBy('name','DESC')->get();
         return view('topics.index', compact('topics'))->with('sucsess', 'topics created');
 
     }
 
 
-    public function create(Request $request)
+    public function create($classroom)
     {
         return view('topics.create', [
             'topics' => new Topic(),
+            'classroom' => $classroom,
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request , $classroom)
     {
         $request->validate([
             'name' =>'required|max:250',]

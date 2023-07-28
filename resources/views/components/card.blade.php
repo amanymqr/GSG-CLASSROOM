@@ -1,30 +1,40 @@
-
 @props([
-        'classroom', //object,
-    ])
+    'classroom', // object,
+])
 
-<div class="col-4 mb-3">
-    <div class="card" style="width: 18rem;">
+<div class="col-md-4 col-sm-6 mb-3">
+    <a href="{{ route('classroom.show', $classroom->id) }}" class="text-decoration-none">
+
+    <div class="card shadow" style="width: 100%; position: relative;">
         @if ($classroom->cover_image_path)
-            <img src="{{ asset('storage/' . $classroom->cover_image_path) }}"
-                class="card-img-top" style="height: 100px; object-fit: cover" alt="Classroom Cover Image">
+            <img src="{{ asset('storage/' . $classroom->cover_image_path) }}" class="card-img-top img-fluid"
+                style="height: 150px; object-fit: cover;" alt="Classroom Cover Image">
         @endif
 
+        <div class="card-img-overlay" style="pointer-events: none;">
+            <div class="position-absolute top-9 text-white">
+                <h5 class="card-title">{{ $classroom->name }}</h5>
+                <p class="card-text">{{ $classroom->section }}-{{ $classroom->room }}</p>
+            </div>
+        </div>
+        {{--  <hr class="divider" style="margin-top: 160px">  --}}
         <div class="card-body">
-            <h5 class="card-title">{{ $classroom->name }}</h5>
-            <p class="card-text">{{ $classroom->section }}-{{ $classroom->room }}</p>
 
-            <div class="text-center">
-                <a href="{{ route('classroom.show', $classroom->id) }}" class="btn btn-primary btn-sm mr-2">View</a>
+            <div class="d-flex justify-content-end">
+                <a href="{{ route('classroom.show', $classroom->id) }}" class="btn"><i class="bi bi-arrows-fullscreen"></i></a>
 
-                <a href="{{ route('classroom.edit', $classroom->id) }}" class="btn btn-success btn-sm text-white mr-2">Update</a>
+                <a href="{{ route('classroom.edit', $classroom->id) }}"
+                    class="btn"><i class="bi bi-pen"></i></a>
 
                 <form action="{{ route('classroom.destroy', $classroom->id) }}" method="post" class="d-inline-block">
                     @csrf
                     @method('delete')
-                    <button class="btn btn-danger btn-sm text-white" onclick="return confirm('Are you sure')">Delete</button>
+                    <button class="btn" onclick="return confirm('Are you sure')"><i class="bi bi-trash"></i></button>
                 </form>
             </div>
         </div>
+
     </div>
+    </a>
 </div>
+

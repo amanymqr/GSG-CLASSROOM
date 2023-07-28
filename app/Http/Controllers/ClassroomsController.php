@@ -25,7 +25,7 @@ class ClassroomsController extends Controller
             ->recent()
             // ->withoutGlobalScopes()
             ->get();
-        return view(' classroom.index', compact('classroom'))->with('sucsess', 'Classroom created');
+        return view('classroom.index', compact('classroom'))->with('sucsess', 'Classroom created');
     }
     //---------------------------------------------------------------------------
     public function create()
@@ -164,7 +164,7 @@ class ClassroomsController extends Controller
 
         Classroom::deleteCoverImage($classroom->cover_image_path);
         return redirect()->route('classroom.index')
-            ->with('msg', "Classroom ({$classroom->name}) restore successfully")
+            ->with('msg', "Classroom ({$classroom->name}) deleted for ever successfully")
             ->with('type', 'success');
     }
 }
