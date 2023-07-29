@@ -11,6 +11,7 @@
                 style="height: 150px; object-fit: cover;" alt="Classroom Cover Image">
         @endif
 
+
         <div class="card-img-overlay" style="pointer-events: none;">
             <div class="position-absolute top-9 text-white">
                 <h5 class="card-title">{{ $classroom->name }}</h5>

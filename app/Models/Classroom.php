@@ -36,6 +36,11 @@ class Classroom extends Model
         //     $query->where('user_id' , '=' , Auth::id());
         // });
         static::addGlobalScope(new UserClassroomScope);
+
+
+        // static::creating(function (Classroom $classroom){
+
+        // });
     }
     //change the route key name from id to code
     public function getRouteKeyName()
@@ -62,27 +67,39 @@ class Classroom extends Model
     public function scopeActive(Builder $query)
     {
         $query->where('status', '=', 'active');
-
     }
 
     public function scopeRecent(Builder $query)
     {
         $query->orderBy('updated_at', 'DESC');
-
-
     }
 
-    public function scopeStatus(Builder $query ,$status='active')
+    public function scopeStatus(Builder $query, $status = 'active')
     {
         $query->where('status', '=', $status);
-
     }
-public function join($user_id , $role='student'){
-    DB::table('classroom_user')->insert([
-        'classroom_id' => $this->id,
-        'user_id' => $user_id,
-        'role' => $role,
-        'created_at' => now(),
-    ]);
+    public function join($user_id, $role = 'student')
+    {
+        DB::table('classroom_user')->insert([
+            'classroom_id' => $this->id,
+            'user_id' => $user_id,
+            'role' => $role,
+            'created_at' => now(),
+        ]);
+    }
+
+//get{{ attribute }}Attribute//accessor
+public function getNameAttribute($value)
+{
+    return strtoupper($value);
 }
+
+// public function getCoverImageUrlAttribute(){
+//     if($this->cover_image_path){
+//         return Storage::disk('public')->url($this->cover_image_path);
+//     }
+//         return'https://placehold.co/600x400';
+// }
+
+
 }

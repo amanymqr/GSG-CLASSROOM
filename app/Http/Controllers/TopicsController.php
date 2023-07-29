@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class TopicsController extends Controller
 {
-    public function index(Request $request , $classroom)
+    public function index($classroom)
     {
         $topics = Topic::where('classroom_id' , '=' , $classroom)->orderBy('name','DESC')->get();
         return view('topics.index', compact('topics'))->with('sucsess', 'topics created');
