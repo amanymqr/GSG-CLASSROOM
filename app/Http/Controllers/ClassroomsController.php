@@ -51,10 +51,10 @@ class ClassroomsController extends Controller
         }
 
 
-        $request->merge([
-            'code' => Str::random(8),
-        ]);
-        $validated['user_id'] = Auth::id();
+        // $request->merge([
+        //     'code' => Str::random(8),
+        // ]);
+        // $validated['user_id'] = Auth::id();
         $validated = $request->validated();
         DB::beginTransaction();
         try {
@@ -162,7 +162,7 @@ class ClassroomsController extends Controller
         $classroom = Classroom::withTrashed()->findOrFail($id);
         $classroom->forceDelete();
 
-        Classroom::deleteCoverImage($classroom->cover_image_path);
+        // Classroom::deleteCoverImage($classroom->cover_image_path);
         return redirect()->route('classroom.index')
             ->with('msg', "Classroom ({$classroom->name}) deleted for ever successfully")
             ->with('type', 'success');

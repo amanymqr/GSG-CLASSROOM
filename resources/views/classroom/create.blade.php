@@ -8,6 +8,7 @@
 
         <h1>Create Classroom</h1>
         <x-block-error />
+        {{--  <x-alert name="error" id="error" class="alert-danger" />  --}}
 
         <form action="{{ route('classroom.store') }}" method="POST" enctype="multipart/form-data">
             @csrf

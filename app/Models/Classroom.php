@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Scopes\UserClassroomScope;
@@ -38,9 +39,14 @@ class Classroom extends Model
         static::addGlobalScope(new UserClassroomScope);
 
 
-        // static::creating(function (Classroom $classroom){
+        static::creating(function (Classroom $classroom) {
+            $classroom->code = Str::random(8);
+            $classroom->user_id = Auth::id();
+        });
 
-        // });
+        static::forceDeleted(function (Classroom $classroom) {
+            static::deleteCoverImage($classroom->cover_image_path);
+        });
     }
     //change the route key name from id to code
     public function getRouteKeyName()
@@ -96,7 +102,7 @@ class Classroom extends Model
 
     // public function getCoverImageUrlAttribute(){
     //     if($this->cover_image_path){
-    //         return Storage::disk('public')->url($this->cover_image_path);
+    //         return Storage::disk(static::$disk)->url($this->cover_image_path);
     //     }
     //         return'https://placehold.co/100x65';
     // }
