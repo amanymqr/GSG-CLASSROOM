@@ -88,18 +88,21 @@ class Classroom extends Model
         ]);
     }
 
-//get{{ attribute }}Attribute//accessor
-public function getNameAttribute($value)
-{
-    return strtoupper($value);
-}
+    //get{{ attribute }}Attribute//accessor
+    public function getNameAttribute($value)
+    {
+        return strtoupper($value);
+    }
 
-// public function getCoverImageUrlAttribute(){
-//     if($this->cover_image_path){
-//         return Storage::disk('public')->url($this->cover_image_path);
-//     }
-//         return'https://placehold.co/600x400';
-// }
+    // public function getCoverImageUrlAttribute(){
+    //     if($this->cover_image_path){
+    //         return Storage::disk('public')->url($this->cover_image_path);
+    //     }
+    //         return'https://placehold.co/100x65';
+    // }
 
-
+    public function getUrlAttribute()
+    {
+        return route("classroom.show", $this->id);
+    }
 }
