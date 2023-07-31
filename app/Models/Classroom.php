@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Scopes\UserClassroomScope;
+use App\Observers\ClassroomObserver;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -37,16 +38,28 @@ class Classroom extends Model
         //     $query->where('user_id' , '=' , Auth::id());
         // });
         static::addGlobalScope(new UserClassroomScope);
+        // static::observe(ClassroomObserver::class);
+        Classroom::observe(ClassroomObserver::class);
 
+        // static::creating(function (Classroom $classroom) {
+        //     $classroom->code = Str::random(8);
+        //     $classroom->user_id = Auth::id();
+        // });
 
-        static::creating(function (Classroom $classroom) {
-            $classroom->code = Str::random(8);
-            $classroom->user_id = Auth::id();
-        });
+        // static::forceDeleted(function (Classroom $classroom) {
+        //     static::deleteCoverImage($classroom->cover_image_path);
+        // });
 
-        static::forceDeleted(function (Classroom $classroom) {
-            static::deleteCoverImage($classroom->cover_image_path);
-        });
+        // static::deleted(function (Classroom $classroom) {
+        //     $classroom->status='deleted';
+        //     $classroom->save();
+        // });
+
+        // static::restored(function (Classroom $classroom) {
+        //     $classroom->status='active';
+        //     $classroom->save();
+
+        // });
     }
     //change the route key name from id to code
     public function getRouteKeyName()
