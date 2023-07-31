@@ -30,7 +30,11 @@ class ClassroomObserver
      */
     public function deleted(Classroom $classroom): void
     {
-        Classroom::deleteCoverImage($classroom->cover_image_path);
+        if ($classroom->isForceDeleting()) {
+            return;
+        }
+        $classroom->status = 'deleted';
+        $classroom->save();
     }
 
     /**
@@ -47,6 +51,6 @@ class ClassroomObserver
      */
     public function forceDeleted(Classroom $classroom): void
     {
-        //
+        Classroom::deleteCoverImage($classroom->cover_image_path);
     }
 }
