@@ -4,6 +4,7 @@ use App\Models\Classroom;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TopicsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ClassworkController;
 use App\Http\Controllers\ClassroomsController;
 use App\Http\Controllers\JoinClassroomController;
 
@@ -70,7 +71,9 @@ Route::middleware(['auth'])->group(function () {
 
 
     //resources
-
     Route::resources(['classroom' => ClassroomsController::class,]);
     Route::resources(['classroom.topics' => TopicsController::class,]);
+    Route::resources(['classroom.classwork' => ClassworkController::class,]);
+
+
 });

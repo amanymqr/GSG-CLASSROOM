@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Topic;
+use App\Models\Classwork;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use App\Observers\ClassroomObserver;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Scopes\UserClassroomScope;
-use App\Observers\ClassroomObserver;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Classroom extends Model
 {
@@ -38,29 +41,23 @@ class Classroom extends Model
         //     $query->where('user_id' , '=' , Auth::id());
         // });
         static::addGlobalScope(new UserClassroomScope);
-        // static::observe(ClassroomObserver::class);
         Classroom::observe(ClassroomObserver::class);
-
-        // static::creating(function (Classroom $classroom) {
-        //     $classroom->code = Str::random(8);
-        //     $classroom->user_id = Auth::id();
-        // });
-
-        // static::forceDeleted(function (Classroom $classroom) {
-        //     static::deleteCoverImage($classroom->cover_image_path);
-        // });
-
-        // static::deleted(function (Classroom $classroom) {
-        //     $classroom->status='deleted';
-        //     $classroom->save();
-        // });
-
-        // static::restored(function (Classroom $classroom) {
-        //     $classroom->status='active';
-        //     $classroom->save();
-
-        // });
     }
+
+
+    //Relations--------
+    public function classworks():HasMany
+    {
+        return $this->hasMany(Classwork::class, "classroom_id" , "id");
+    }
+
+    public function topics():HasMany
+    {
+        return $this->hasMany(Topic::class, "classroom_id" , "id");
+    }
+
+
+
     //change the route key name from id to code
     public function getRouteKeyName()
     {
