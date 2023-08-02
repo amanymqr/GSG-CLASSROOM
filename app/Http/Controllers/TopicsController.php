@@ -12,6 +12,7 @@ class TopicsController extends Controller
     public function index($classroom)
     {
         $topics = Topic::where('classroom_id' , '=' , $classroom)->orderBy('name','DESC')->get();
+        // $topics=$classroom->topics()->orderBy('name','DESC')->get();
         return view('topics.index', compact('topics'))->with('sucsess', 'topics created');
 
     }

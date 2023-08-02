@@ -11,12 +11,14 @@ class Classwork extends Model
     use HasFactory;
 
 //make the code more readable and maintainablep
-const TYPE_ASSIGMENT='assignment';
+const TYPE_ASSIGMENT='assigment';
 const TYPE_MATERIAL='material';
 const TYPE_QUESTION='question';
 const STATUS_DRAFT='draft';
 const STATUS_PUBLISHED='published';
-
+// assigment
+// material
+// question
     protected $fillable = [
 
         'classroom_id',
@@ -34,5 +36,10 @@ const STATUS_PUBLISHED='published';
     public function classroom():BelongsTo
     {
         return $this->belongsTo(Classroom::class, 'classroom_id', 'id');
+    }
+
+    public function topic():BelongsTo
+    {
+        return $this->belongsTo(Topic::class);
     }
 }

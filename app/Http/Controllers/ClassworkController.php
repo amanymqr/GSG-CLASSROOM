@@ -29,10 +29,13 @@ class ClassworkController extends Controller
     public function index(Classroom $classroom)
     {
 
-        $classwork = $classroom->classworks()->orderBy('published_at')->get();
+        $classwork = $classroom->classworks()
+                ->with('topic')//eager load
+                ->orderBy('published_at')->groupBy()
+                ->lazy();
         return view('classwork.index', [
             'classroom' => $classroom,
-            'classwork' => $classwork,
+            'classwork' => $classwork->groupBy('topic_id'),
         ]);
     }
 
@@ -47,8 +50,9 @@ class ClassworkController extends Controller
     }
 
 
-    public function store(Request $request, Classroom $calssroom)
+    public function store(Request $request, Classroom $classroom)
     {
+        // dd($request->all());
         $type = $this->getType($request);
         $request->validate([
             'title' => ['required', 'string', 'max:255'],
@@ -61,9 +65,10 @@ class ClassworkController extends Controller
             'user_id' => Auth::id(),
             'type' => $type,
         ]);
+        // dd($request->all());
 
-        $classwork = $calssroom->classworks()->create($request->all());
-        return redirect()->route('classroom.classwork.index', $calssroom->id)->with('msg', 'classwork craeted successfully')->with('type', 'success');
+        $classwork = $classroom->classworks()->create($request->all());
+        return redirect()->route('classroom.classwork.index', $classroom->id)->with('msg', 'classwork craeted successfully')->with('type', 'success');
     }
 
     /**

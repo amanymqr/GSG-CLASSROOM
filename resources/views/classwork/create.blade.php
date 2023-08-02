@@ -19,10 +19,7 @@
             <x-form.floating-control name="description" placeholder="description">
                 <x-form.textarea name="description" value="" placeholder="description" />
             </x-form.floating-control>
-{{--
-            <x-form.floating-control name="topic_id" placeholder="topic_id">
-                <x-form.input name="topic_id" value="" placeholder="topic_id" />
-            </x-form.floating-control>  --}}
+
 
             <select class="form-select" name="topic_id" id="topic_id">
                 <option value="">no topic</option>
