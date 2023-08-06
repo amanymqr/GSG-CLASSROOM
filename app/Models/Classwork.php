@@ -42,4 +42,9 @@ const STATUS_PUBLISHED='published';
     {
         return $this->belongsTo(Topic::class);
     }
+
+    public function uers()
+    {
+        return $this->belongsToMany(User::class)->withPivot('grade' , 'submitted_at' , 'status' , 'created_at')->using(ClassworkUser::class);
+    }
 }
