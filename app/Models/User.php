@@ -60,19 +60,30 @@ class User extends Authenticatable
     }
 
 
-    // public function classrooms()
-    // {
-    //     return $this->belongsToMany(
-    //         Classroom::class,
-    //         'classroom_user', //related model
-    //         'classroom_id', //pivot table
-    //         'user_id',     //fk for current model in pivot table
-    //         'id',
-    //         'id',
-    //     )->wherePivot('role' , 'created_at');
-    // }
+    public function classrooms()
+    {
+        return $this->belongsToMany(
+            Classroom::class,
+            'classroom_user', //related model
+            'classroom_id', //pivot table
+            'user_id',     //fk for current model in pivot table
+            'id',
+            'id',
+        )->wherePivot('role', 'created_at');
+    }
 
-// public function createdClassrooms()  {
-//     return $this->hasMany()
-// }
+    public function createdClassrooms()
+    {
+        return $this->hasMany(Classroom::class, 'user_id');
+    }
+    public function classworks()
+    {
+        return $this->hasManyThrough(
+            Classwork::class,
+            'App\Models\User',
+            'id',
+            'user_id'
+        ); //through model
+
+    }
 }

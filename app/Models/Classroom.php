@@ -66,8 +66,6 @@ class Classroom extends Model
             'id',               //PK for current model
             'id',               //PK for related model
         )->withPivot(['role' , 'created_at']);
-//>wherePivot('role' , 'created_at')
-//->wherePivot('role' , '=' , 'teacher')//->as('join')
 
     }
 
@@ -120,12 +118,16 @@ class Classroom extends Model
     }
     public function join($user_id, $role = 'student')
     {
-        DB::table('classroom_user')->insert([
-            'classroom_id' => $this->id,
-            'user_id' => $user_id,
+        return $this->users()->attach($user_id , [
             'role' => $role,
             'created_at' => now(),
         ]);
+        // DB::table('classroom_user')->insert([
+        //     'classroom_id' => $this->id,
+        //     'user_id' => $user_id,
+        //     'role' => $role,
+        //     'created_at' => now(),
+        // ]);
     }
 
     //get{{ attribute }}Attribute//accessor

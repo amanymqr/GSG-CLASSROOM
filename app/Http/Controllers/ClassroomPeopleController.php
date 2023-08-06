@@ -9,6 +9,8 @@ class ClassroomPeopleController extends Controller
 {
 
     public function __invoke(Classroom $classroom)  {
+        // dd($classroom->users ,
+        //     $classroom->classworks->first()->users);
         return view('classroom.people' , compact(['classroom']));
 
     }
