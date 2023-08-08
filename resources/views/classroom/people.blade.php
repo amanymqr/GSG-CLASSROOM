@@ -4,6 +4,7 @@
 @section('content')
     <div class="container mt-4">
         <h1>{{ $classroom->name }}</h1>
+        <x-alert />
 
 
 
@@ -23,7 +24,12 @@
                         <td></td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->pivot->role }}</td>
-                        <td></td>
+                        <td></td> <td><form action="{{ route('classroom.people.destroy' , $classroom->id) }}" method="POST">
+                            @csrf
+                            @method('delete')
+                            <input type="hidden" name="user_id" value="{{ $user->id }}">
+                            <button class="btn btn-danger">Remove</button>
+
 
                     </tr>
                 @endforeach
@@ -47,7 +53,13 @@
                         <td></td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->pivot->role }}</td>
-                        <td></td>
+                        <td><form action="{{ route('classroom.people.destroy' , $classroom->id) }}" method="POST">
+                        @csrf
+                        @method('delete')
+                        <input type="hidden" name="user_id" value="{{ $user->id }}">
+                        <button class="btn btn-danger">Remove</button>
+
+                        </form></td>
 
                     </tr>
                 @endforeach

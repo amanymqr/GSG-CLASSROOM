@@ -43,8 +43,15 @@ const STATUS_PUBLISHED='published';
         return $this->belongsTo(Topic::class);
     }
 
-    public function uers()
+    public function users()
     {
         return $this->belongsToMany(User::class)->withPivot('grade' , 'submitted_at' , 'status' , 'created_at')->using(ClassworkUser::class);
     }
+
+public function setUpdatedAt($value)
+{
+
+        return $this ;
+
+}
 }

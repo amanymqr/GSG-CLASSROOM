@@ -66,5 +66,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resources(['classroom.topics' => TopicsController::class,]);
     Route::resources(['classroom.classwork' => ClassworkController::class,]);
 
-    Route::get('/classroom/{classroom}/people', ClassroomPeopleController::class)->name('classroom.people');
+    Route::get('/classroom/{classroom}/people', [ClassroomPeopleController::class , 'index'])->name('classroom.people');
+
+    Route::delete('/classroom/{classroom}/people', [ClassroomPeopleController::class , 'destroy'])->name('classroom.people.destroy');
 });

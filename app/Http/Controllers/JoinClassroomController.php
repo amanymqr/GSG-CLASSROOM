@@ -37,11 +37,10 @@ class JoinClassroomController extends Controller
             ->active()
             ->findOrFail($id);
         try {
-            $this->exists($classroom, Auth::id());
+            $classroom->join(Auth::id(), $request->input('role', 'student'));
         } catch (Exception $e) {
             return redirect()->route('classroom.show', $id);
         }
-        $classroom->join(Auth::id(), $request->input('role', 'student'));
         return view('classroom.join', compact('classroom'));
     }
 

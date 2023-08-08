@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use Exception;
 use App\Models\Topic;
 use App\Models\Classwork;
 use Illuminate\Support\Str;
@@ -116,18 +116,21 @@ class Classroom extends Model
     {
         $query->where('status', '=', $status);
     }
+
+
+
+
     public function join($user_id, $role = 'student')
     {
+        $exists =$this->users()->where('user_id' , '=' , $user_id)->exists();
+        if($exists){
+        throw new Exception("You are already joined in this class");
+        }
         return $this->users()->attach($user_id , [
             'role' => $role,
             'created_at' => now(),
         ]);
-        // DB::table('classroom_user')->insert([
-        //     'classroom_id' => $this->id,
-        //     'user_id' => $user_id,
-        //     'role' => $role,
-        //     'created_at' => now(),
-        // ]);
+
     }
 
     //get{{ attribute }}Attribute//accessor
@@ -136,12 +139,6 @@ class Classroom extends Model
         return strtoupper($value);
     }
 
-    // public function getCoverImageUrlAttribute(){
-    //     if($this->cover_image_path){
-    //         return Storage::disk(static::$disk)->url($this->cover_image_path);
-    //     }
-    //         return'https://placehold.co/100x65';
-    // }
 
     public function getUrlAttribute()
     {

@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Classroom;
 use App\Models\Classwork;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-
 use function PHPSTORM_META\type;
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class ClassworkController extends Controller
 {
@@ -30,9 +31,9 @@ class ClassworkController extends Controller
     {
 
         $classwork = $classroom->classworks()
-                ->with('topic')//eager load
-                ->orderBy('published_at')->groupBy()
-                ->lazy();
+            ->with('topic') //eager load
+            ->orderBy('published_at')->groupBy()
+            ->lazy();
         return view('classwork.index', [
             'classroom' => $classroom,
             'classwork' => $classwork->groupBy('topic_id'),
@@ -46,7 +47,7 @@ class ClassworkController extends Controller
     {
         $type = $this->getType($request);
         // $topics=$classroom->topics();
-        return view('classwork.create', compact('classroom', 'type' ));
+        return view('classwork.create', compact('classroom', 'type'));
     }
 
 
@@ -67,7 +68,11 @@ class ClassworkController extends Controller
         ]);
         // dd($request->all());
 
-        $classwork = $classroom->classworks()->create($request->all());
+        // DB::transaction(function () use ($classroom, $request) {
+
+            $classwork = $classroom->classworks()->create($request->all());
+        // });
+        $classwork->users()->attach($request->input('studets'));
         return redirect()->route('classroom.classwork.index', $classroom->id)->with('msg', 'classwork craeted successfully')->with('type', 'success');
     }
 
@@ -82,17 +87,23 @@ class ClassworkController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit(Request $request , Classroom $classroom , Classwork $classwork)
     {
-        //
+        $type = $this->getType($request);
+        $assigned=$classwork->users()->pluck('id')->toArray();
+        return view('classwork.edit', compact('classroom', 'type' ,'assigned'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request , Classroom $classroom , Classwork $classwork)
     {
-        //
+
+        $classwork->update($request->all());
+        $classwork->users()->sync($request->input('studets'));
+        return back()->with('msg', 'classwork updated successfully')->with('type', 'success');
+
     }
 
     /**
