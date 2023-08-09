@@ -41,6 +41,8 @@
                             /{{ $classwork->topic->name }}
                         </button>
                         <a href="{{ route('classroom.classwork.edit', ['classroom' => $classroom, 'classwork' => $classwork]) }}" class="btn btn-primary">Edit</a>
+
+                        {{--  <a href="{{ route('comments.store', ['classroom' => $classroom, 'classwork' => $classwork]) }}" class="btn btn-info">show</a>  --}}
                     </h2>
                     <div id="flush-collapse{{ $classwork->id }}" class="accordion-collapse collapse"
                         aria-labelledby="flush-headingOne" data-bs-parent="#accordion{{ $i }}">

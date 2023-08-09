@@ -17,9 +17,14 @@ class Comment extends Model
         'ip',
         'user_agent',
     ];
+    protected $with=[
+        'user'
+    ];
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withDefault([
+            'name'=>'deleted user'
+        ]);
     }
     public function commentable(){
         return $this->morphTo();

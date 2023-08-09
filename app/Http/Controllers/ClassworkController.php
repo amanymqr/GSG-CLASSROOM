@@ -80,9 +80,10 @@ class ClassworkController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show()
+    public function show(Classroom $classroom , Classwork $classwork)
     {
-        //
+        // $classwork->load('comments.user');
+        return view('classwork.show', compact('classroom','classwork' ));
     }
 
     /**

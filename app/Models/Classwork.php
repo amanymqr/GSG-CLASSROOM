@@ -53,6 +53,6 @@ const STATUS_PUBLISHED='published';
     }
 
 public function comments(){
-    return  $this -> morphMany(Comment::class,'commentable');
+    return  $this -> morphMany(Comment::class,'commentable')->latest();
 }
 }
