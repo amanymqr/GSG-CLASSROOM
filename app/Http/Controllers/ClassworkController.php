@@ -68,11 +68,12 @@ class ClassworkController extends Controller
         ]);
         // dd($request->all());
 
-        // DB::transaction(function () use ($classroom, $request) {
+        DB::transaction(function () use ($classroom, $request) {
 
             $classwork = $classroom->classworks()->create($request->all());
-        // });
-        $classwork->users()->attach($request->input('studets'));
+            $classwork->users()->attach($request->input('studets'));
+
+        });
         return redirect()->route('classroom.classwork.index', $classroom->id)->with('msg', 'classwork craeted successfully')->with('type', 'success');
     }
 
@@ -91,7 +92,7 @@ class ClassworkController extends Controller
     {
         $type = $this->getType($request);
         $assigned=$classwork->users()->pluck('id')->toArray();
-        return view('classwork.edit', compact('classroom', 'type' ,'assigned'));
+        return view('classwork.edit', compact('classroom', 'type' ,'classwork' ,'assigned'));
     }
 
     /**
@@ -102,7 +103,9 @@ class ClassworkController extends Controller
 
         $classwork->update($request->all());
         $classwork->users()->sync($request->input('studets'));
-        return back()->with('msg', 'classwork updated successfully')->with('type', 'success');
+        return redirect()->route('classroom.classwork.index', ['classroom' => $classroom])
+        ->with('msg', 'classwork updated successfully')
+        ->with('type', 'success');
 
     }
 

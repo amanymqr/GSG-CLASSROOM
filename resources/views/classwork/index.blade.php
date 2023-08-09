@@ -28,30 +28,31 @@
 
             </div>
         </h3>
-
         @forelse($classwork as $i => $group)
-            <h3>{{$group->first()->topic->name }}</h3>
-            <div class="accordion accordion-flush" id="accordion{{ $i }}">
-                @foreach ($group as $classwork)
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="flush-headingOne">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#flush-collapse{{ $classwork->id }}" aria-expanded="false"
-                                aria-controls="flush-collapseOne">
-                                {{ $classwork->title }}
-                                /{{ $classwork->topic->name }}
-                            </button>
-                        </h2>
-                        <div id="flush-collapse{{ $classwork->id }}" class="accordion-collapse collapse"
-                            aria-labelledby="flush-headingOne" data-bs-parent="#accordion{{ $i }}">
-                            <div class="accordion-body">{{ $classwork->description }}</div>
-                        </div>
+        <h3>{{ $group->first()->topic->name }}</h3>
+        <div class="accordion accordion-flush" id="accordion{{ $i }}">
+            @foreach ($group as $classwork)
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingOne">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapse{{ $classwork->id }}" aria-expanded="false"
+                            aria-controls="flush-collapseOne">
+                            {{ $classwork->title }}
+                            /{{ $classwork->topic->name }}
+                        </button>
+                        <a href="{{ route('classroom.classwork.edit', ['classroom' => $classroom, 'classwork' => $classwork]) }}" class="btn btn-primary">Edit</a>
+                    </h2>
+                    <div id="flush-collapse{{ $classwork->id }}" class="accordion-collapse collapse"
+                        aria-labelledby="flush-headingOne" data-bs-parent="#accordion{{ $i }}">
+                        <div class="accordion-body">{{ $classwork->description }}</div>
                     </div>
-                @endforeach
-            </div>
-        @empty
-            <p>No Classworks Found!</p>
-        @endforelse
+                </div>
+            @endforeach
+        </div>
+    @empty
+        <p>No Classworks Found!</p>
+    @endforelse
+
 
     </div>
 @stop

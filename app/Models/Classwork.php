@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Topic;
+use App\Models\Comment;
+use App\Models\Classroom;
+use App\Models\ClassworkUser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Classwork extends Model
 {
@@ -48,10 +52,7 @@ const STATUS_PUBLISHED='published';
         return $this->belongsToMany(User::class)->withPivot('grade' , 'submitted_at' , 'status' , 'created_at')->using(ClassworkUser::class);
     }
 
-public function setUpdatedAt($value)
-{
-
-        return $this ;
-
+public function comments(){
+    return  $this -> morphMany(Comment::class,'commentable');
 }
 }

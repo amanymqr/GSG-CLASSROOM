@@ -50,7 +50,7 @@
 
 
 
-            <button class="btn btn-secondary" type="submit">create</button>
+            <button class="btn btn-secondary" type="submit">update</button>
 
 
 

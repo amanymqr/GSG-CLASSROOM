@@ -4,11 +4,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Comment;
+use App\Models\Classroom;
+use App\Models\ClassworkUser;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -76,14 +79,23 @@ class User extends Authenticatable
     {
         return $this->hasMany(Classroom::class, 'user_id');
     }
+    // public function classworks()
+    // {
+    //     return $this->hasManyThrough(
+    //         Classwork::class,
+    //         'App\Models\User',
+    //         'id',
+    //         'user_id'
+    //     ); //through model
+
+    // }
+
     public function classworks()
     {
-        return $this->hasManyThrough(
-            Classwork::class,
-            'App\Models\User',
-            'id',
-            'user_id'
-        ); //through model
-
+        return $this->belongsToMany(Classwork::class)->using(ClassworkUser::class)->withPivot(['grade', 'status', 'submitted_at', 'created_at']);
+    }
+    public function comment()
+    {
+        return $this->hasMany(Comment::class);
     }
 }
