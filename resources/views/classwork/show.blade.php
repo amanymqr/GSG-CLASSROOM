@@ -15,7 +15,7 @@
             </p>
         </div>
         <h4>Comments</h4>
-        <x-alert />
+        {{--  <x-alert />  --}}
         <form action="{{ route('comments.store') }}" method="post">
             @csrf
             <input type="hidden" name="id" value="{{ $classwork->id }}">
