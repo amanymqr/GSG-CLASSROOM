@@ -1,8 +1,8 @@
 
-@props([
-    'name'
-])
-
-@error('name')
-    <small class="text-danger">{{ $message }}</small>
+@php
+    $name = str_replace('[', '.', $name);
+    $name = str_replace(']', '', $name);
+@endphp
+@error($name)
+    <div class="invalid-feedback">{{ $message }}</div>
 @enderror

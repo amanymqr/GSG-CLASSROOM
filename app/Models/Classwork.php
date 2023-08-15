@@ -14,15 +14,18 @@ class Classwork extends Model
 {
     use HasFactory;
 
-//make the code more readable and maintainablep
-const TYPE_ASSIGMENT='assigment';
-const TYPE_MATERIAL='material';
-const TYPE_QUESTION='question';
-const STATUS_DRAFT='draft';
-const STATUS_PUBLISHED='published';
-// assigment
-// material
-// question
+    //make the code more readable and maintainablep
+    const TYPE_ASSIGNMENT = 'assignment';
+    const TYPE_MATERIAL = 'material';
+    const TYPE_QUESTION = 'question';
+    const STATUS_DRAFT = 'draft';
+    const STATUS_PUBLISHED = 'published';
+
+
+
+    // assigment
+    // material
+    // question
     protected $fillable = [
 
         'classroom_id',
@@ -35,24 +38,48 @@ const STATUS_PUBLISHED='published';
         'published_at',
         'options',
     ];
+    protected $casts = [
+        'options' =>  'json',
+        'classroom_id' => 'integer',
+        'published_at' => 'datetime:Y-m-d',
+    ];
+
+
+    protected static function booted()
+    {
+
+        static::creating(function (Classwork $classwork) {
+            if (!$classwork->published_at) {
+                $classwork->published_at = now();
+            }
+        });
+    }
+
+    public function getPublishedDateAttribute()
+    {
+        if($this->published_at)
+        return $this->published_at->format('Y-m-d');
+    }
+
 
     //Relations
-    public function classroom():BelongsTo
+    public function classroom(): BelongsTo
     {
         return $this->belongsTo(Classroom::class, 'classroom_id', 'id');
     }
 
-    public function topic():BelongsTo
+    public function topic(): BelongsTo
     {
         return $this->belongsTo(Topic::class);
     }
 
     public function users()
     {
-        return $this->belongsToMany(User::class)->withPivot('grade' , 'submitted_at' , 'status' , 'created_at')->using(ClassworkUser::class);
+        return $this->belongsToMany(User::class)->withPivot('grade', 'submitted_at', 'status', 'created_at')->using(ClassworkUser::class);
     }
 
-public function comments(){
-    return  $this -> morphMany(Comment::class,'commentable')->latest();
-}
+    public function comments()
+    {
+        return  $this->morphMany(Comment::class, 'commentable')->latest();
+    }
 }

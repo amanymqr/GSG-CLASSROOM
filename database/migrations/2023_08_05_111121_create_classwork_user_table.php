@@ -17,14 +17,13 @@ return new class extends Migration
             $table->float('grade')->nullable();
             $table->timestamp('submitted_at')->nullable();
             $table->timestamp('created_at')->nullable();
-            $table->enum('status' , ['assigned','draft', 'submitted' , 'returned'])->default('assigned');
-            $table->primary(['classwork_id' , 'user_id' ]);
+            $table->enum('status', ['assigned', 'draft', 'submitted', 'returned'])->default('assigned');
+            $table->primary(['classwork_id', 'user_id']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+
+
     public function down(): void
     {
         Schema::dropIfExists('classwork_user');
