@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\classworkType;
 use App\Models\Topic;
 use App\Models\Comment;
 use App\Models\Classroom;
@@ -42,6 +43,7 @@ class Classwork extends Model
         'options' =>  'json',
         'classroom_id' => 'integer',
         'published_at' => 'datetime:Y-m-d',
+        'type' => classworkType::class,
     ];
 
 

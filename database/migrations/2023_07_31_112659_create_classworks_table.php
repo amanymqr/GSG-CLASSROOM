@@ -28,7 +28,7 @@ return new class extends Migration
 
             $table->string('title');
             $table->longText('description')->nullable(); //4K
-            $table->enum('type' ,['assigment' , 'material' , 'question']);
+            $table->enum('type' ,['assignment' , 'material' , 'question']);
             $table->enum('status' ,['published' , 'dart' ])->default('published');
             $table->timestamp('published_at')->nullable();
             $table->json('options')->nullable();

@@ -57,6 +57,7 @@ class ClassworkController extends Controller
 
     public function store(Request $request, Classroom $classroom)
     {
+// dd($request->all());
         $type = $this->getType($request);
 
         // Validate the request data
