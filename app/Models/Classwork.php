@@ -7,6 +7,7 @@ use App\Models\Topic;
 use App\Models\Comment;
 use App\Models\Classroom;
 use App\Models\ClassworkUser;
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -39,12 +40,27 @@ class Classwork extends Model
         'published_at',
         'options',
     ];
+
+
     protected $casts = [
         'options' =>  'json',
         'classroom_id' => 'integer',
         'published_at' => 'datetime:Y-m-d',
         'type' => classworkType::class,
+
+
     ];
+
+    public function scopeFilter(Builder $builder, $filters)
+    {
+        $builder->when($filters['search'] ?? '', function ($builder, $value) {
+            $builder->where('title', 'LIKE', '%' . $value . '%')
+                ->orWhere('description', 'LIKE', '%' . $value . '%');
+        })
+        ->when($filters['type'] ?? '', function ($builder, $value) {
+            $builder->where('type', 'LIKE', '%' . $value . '%');
+        });
+    }
 
 
     protected static function booted()
@@ -59,8 +75,8 @@ class Classwork extends Model
 
     public function getPublishedDateAttribute()
     {
-        if($this->published_at)
-        return $this->published_at->format('Y-m-d');
+        if ($this->published_at)
+            return $this->published_at->format('Y-m-d');
     }
 
 

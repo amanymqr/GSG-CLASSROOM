@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Classroom;
 use App\Models\Classwork;
-use Illuminate\Database\QueryException;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
-use function PHPSTORM_META\type;
+use Illuminate\Validation\Rule;
 
+use function PHPSTORM_META\type;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
+use Illuminate\Database\QueryException;
 
 class ClassworkController extends Controller
 {
@@ -29,26 +30,27 @@ class ClassworkController extends Controller
     }
 
 
-    public function index(Classroom $classroom)
-    {
 
+    public function index(Request $request, Classroom $classroom)
+    {
         $classwork = $classroom->classworks()
-            ->with('topic') //eager load
-            ->orderBy('published_at')->groupBy()
-            ->lazy();
+            ->with('topic')
+            ->filter($request->query( ))
+            ->orderBy('published_at')->paginate(5);
+
         return view('classwork.index', [
             'classroom' => $classroom,
-            'classwork' => $classwork->groupBy('topic_id'),
+            'classwork' => $classwork
         ]);
     }
-
 
 
 
     public function create(Request $request, Classroom $classroom)
     {
         $type = $this->getType($request);
-        // dd(getType($request));
+
+        // dd(($type));
         // $topics=$classroom->topics();
         $classwork = new Classwork();
         return view('classwork.create', compact('classroom', 'classwork', 'type'));
@@ -57,7 +59,7 @@ class ClassworkController extends Controller
 
     public function store(Request $request, Classroom $classroom)
     {
-// dd($request->all());
+        // dd($request->all());
         $type = $this->getType($request);
 
         // Validate the request data
@@ -65,8 +67,8 @@ class ClassworkController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'topic_id' => ['nullable', 'int', 'exists:topics,id'],
-            'options.grade' => [Rule::requiredIf(fn() => $type == 'assignment'),'numeric','min:0'],
-            'options.due'=>['nullable' ,'date', 'after:published_at']
+            'options.grade' => [Rule::requiredIf(fn () => $type == 'assignment'), 'numeric', 'min:0'],
+            'options.due' => ['nullable', 'date', 'after:published_at']
         ]);
         $request->merge([
             'user_id' => Auth::id(),
@@ -108,7 +110,23 @@ class ClassworkController extends Controller
 
     public function edit(Request $request, Classroom $classroom, Classwork $classwork)
     {
-        $type = $classwork->type;
+        // $type = $this->getType($request);
+        // if ($classwork->getType == 'assignment') {
+        //     $type = $this->getType($request);
+        // } else {
+        //     $type = $classwork->type;
+        // }
+
+        $classwork = $classroom->classworks()
+            ->findOrFail($classwork->id);
+        $type = $classwork->type->value;
+
+        $assigned = $classwork->users()
+            ->pluck('id')
+            ->toArray(); // تحول العنصر لاوبجكت
+
+        // return view('classworks.edit', compact('classroom', 'classwork', 'type', 'assigned'));
+        // dd($type);
         $assigned = $classwork->users()->pluck('id')->toArray();
         return view('classwork.edit', compact('classroom', 'type', 'classwork', 'assigned'));
     }
@@ -118,12 +136,17 @@ class ClassworkController extends Controller
      */
     public function update(Request $request, Classroom $classroom, Classwork $classwork)
     {
-
+        $type = $classwork->type;
+        $validate =  $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'topic_id' => ['nullable', 'int', 'exists:topics,id'],
+            'options.grade' => [Rule::requiredIf(fn () => $type == 'assignment' || 'question'), 'numeric', 'min:0'],
+            'options.due' => ['nullable', 'date', 'after:published_at'],
+        ]);
         $classwork->update($request->all());
-        $classwork->users()->sync($request->input('studets'));
-        return redirect()->route('classroom.classwork.index', ['classroom' => $classroom])
-            ->with('msg', 'classwork updated successfully')
-            ->with('type', 'success');
+        return view('classwork.edit', compact('classroom', 'classwork'))
+            ->with('success', 'Classwork Updated');
     }
 
     /**

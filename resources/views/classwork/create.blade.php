@@ -2,7 +2,6 @@
 @section('title', 'show classwork')
 
 @section('content')
-    {{--  <x-block-error />  --}}
 
     <div class="container mt-5">
 

@@ -20,14 +20,15 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        @yield('style')
     </style>
+    @yield('style')
+
 </head>
 
 <body>
 
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+        <nav class="navbar navbar-expand-lg shadow-sm">
             <div class="container">
                 <div class="">
                     <img style="width: 90px " src="{{ asset('img/googlelogo_color_92x30dp.png') }}" alt="">
@@ -89,6 +90,8 @@
     <footer>
         <p class="text-center text-muted  "><span class="py-2">© {{ date('Y') }} GSG Classroom</span></p>
     </footer>
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
