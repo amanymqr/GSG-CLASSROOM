@@ -39,14 +39,25 @@
 
             <div class="col-md-4">
                 <div class="bordered rounded p-3 bg-lighr">
-                    <h4>submit</h4>
-                    <form action="{{ route('submissions.store', $classwork->id) }}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <x-form.floating-control name="files.0" placeholder="files">
-                            <x-form.input type="file" name="files[]" multiple placeholder="select file" />
-                        </x-form.floating-control>
-                        <button type="submit" class="btn btn-outline-secondary">submit</button>
-                    </form>
+                    <h4>submissions</h4>
+                    @if ($submissions->count())
+                        <ul>
+                            @foreach ($submissions as $submission)
+                                <li><a href="{{ route('submissions.file' , $submission->id) }}">File #{{ $loop->iteration }}</a></li>
+
+                            @endforeach
+
+                        </ul>
+                    @else
+                        <form action="{{ route('submissions.store', $classwork->id) }}" method="post"
+                            enctype="multipart/form-data">
+                            @csrf
+                            <x-form.floating-control name="files" placeholder="files">
+                                <x-form.input type="file" name="files[]" multiple placeholder="select file" />
+                            </x-form.floating-control>
+                            <button type="submit" class="btn btn-outline-secondary">submit</button>
+                        </form>
+                    @endif
                 </div>
             </div>
         </div>

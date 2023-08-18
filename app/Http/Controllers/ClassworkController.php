@@ -35,8 +35,8 @@ class ClassworkController extends Controller
     {
         $classwork = $classroom->classworks()
             ->with('topic')
-            ->filter($request->query( ))
-            ->latest('published_at' )->paginate(5);
+            ->filter($request->query())
+            ->latest('published_at')->paginate(5);
 
         return view('classwork.index', [
             'classroom' => $classroom,
@@ -101,8 +101,12 @@ class ClassworkController extends Controller
 
     public function show(Classroom $classroom, Classwork $classwork)
     {
+        $submissions = Auth::user()
+            ->submissions()
+            ->where('classwork_id', $classwork->id)
+            ->get();
         // $classwork->load('comments.user');
-        return view('classwork.show', compact('classroom', 'classwork'));
+        return view('classwork.show', compact('classroom', 'classwork', 'submissions'));
     }
 
 

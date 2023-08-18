@@ -8,8 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Submission extends Model
 {
     use HasFactory;
-protected $fillable=[
-'user_id','classwork_id','content','type'
+    protected $fillable = [
+        'user_id', 'classwork_id', 'content', 'type'
 
-];
+    ];
+
+    public function classwork()
+    {
+    return $this->belongsTo(Classwork::class);
+    }
 }

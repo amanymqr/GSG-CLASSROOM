@@ -75,4 +75,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('classwork/{classwork}/submissions', [SubmissionController::class, 'store'])
         ->name('submissions.store');
+    Route::get('submissions/{submission}/file', [SubmissionController::class, 'file'])
+        ->name('submissions.file');
 });
