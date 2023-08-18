@@ -19,7 +19,6 @@
         body {
             font-family: 'Poppins', sans-serif;
         }
-
     </style>
     @yield('style')
 
@@ -28,11 +27,11 @@
 <body>
 
     <header>
-        <nav class="navbar navbar-expand-lg shadow-sm">
+        <nav class="navbar navbar-expand-lg  border-bottom">
             <div class="container">
                 <div class="">
-                    <img style="width: 90px " src="{{ asset('img/googlelogo_color_92x30dp.png') }}" alt="">
-                    <a class="navbar-brand text-secondary fs-4  fw-normal"
+                    <img style="width: 60px " src="{{ asset('img/googlelogo_color_92x30dp.png') }}" alt="">
+                    <a class="navbar-brand text-secondary fs-5  fw-normal"
                         href="{{ route('classroom.index') }}">{{ config('app.name', 'Laravel') }}</a>
                 </div>
 
@@ -47,13 +46,13 @@
                         </li>  --}}
 
                     </ul>
-                    <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center justify-content-center">
 
-                        <ul class="navbar-nav mx-1 ">
+                        <ul class="navbar-nav mx-1  ">
                             <li class="nav-item dropdown  ">
-                                <a class="fs-3 text-dark " href="#" id="navbarDropdown" role="button"
+                                <a class="fs-5 mx-2 text-dark " href="#" id="navbarDropdown" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-plus fw-bold "></i>
+                                    <i class="bi bi-list-ul"></i>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="#">Join Classroom</a></li>
@@ -66,14 +65,15 @@
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
-                                    <li><a class="dropdown-item" href="{{ route('classroom.trashed') }}">Trashed Classroom</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('classroom.trashed') }}">Trashed
+                                            Classroom</a></li>
                                     <li>
                                 </ul>
                             </li>
                         </ul>
-                        <p class="mx-1 mb-0">{{ Auth::user()->name }}</p>
+                        {{--  <p class="mx-1 mb-0">{{ Auth::user()->name }}</p>  --}}
                         <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}" alt=""
-                            class="rounded-circle " style="width: 30px">
+                            class="rounded-circle mt-2" style="width: 26px ;">
                     </div>
 
 
@@ -96,7 +96,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
-
     @stack('scripts')
 </body>
 

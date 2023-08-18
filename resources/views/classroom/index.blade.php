@@ -1,5 +1,16 @@
 @extends('layouts.master')
 @section('title', 'classrooms')
+@section('style')
+<style>
+
+    h3{
+        color:rgb(64, 63, 66);
+        }
+</style>
+
+
+
+@endsection
 
 @section('content')
 
@@ -9,7 +20,7 @@
 
     <div class="cards-classroom m-4 text-center">
         <div class="container">
-            <h1 class="m-5">My Classrooms</h1>
+            <h3 class="m-4">My Classrooms</h3>
 
             <div class="row">
 

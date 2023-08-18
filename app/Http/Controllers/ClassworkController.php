@@ -103,8 +103,7 @@ class ClassworkController extends Controller
     {
         $submissions = Auth::user()
             ->submissions()
-            ->where('classwork_id', $classwork->id)
-            ->get();
+            ->where('classwork_id', $classwork->id)->get();
         // $classwork->load('comments.user');
         return view('classwork.show', compact('classroom', 'classwork', 'submissions'));
     }
