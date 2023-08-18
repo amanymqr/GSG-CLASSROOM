@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Models\Comment;
 use App\Models\Classroom;
+use App\Models\Submission;
 use App\Models\ClassworkUser;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -97,5 +98,10 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function submissions()
+    {
+        return $this->hasMany(Submission::class);
     }
 }

@@ -9,6 +9,8 @@ use App\Http\Controllers\ClassroomsController;
 use App\Http\Controllers\JoinClassroomController;
 use App\Http\Controllers\ClassroomPeopleController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\SubmissionController;
+use App\Models\Submission;
 
 Route::get('/', function () {
     return view('welcome');
@@ -69,6 +71,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/classroom/{classroom}/people', [ClassroomPeopleController::class, 'index'])->name('classroom.people');
 
     Route::delete('/classroom/{classroom}/people', [ClassroomPeopleController::class, 'destroy'])->name('classroom.people.destroy');
-
     Route::post('comments', [CommentController::class, 'store'])->name('comments.store');
+
+    Route::post('classwork/{classwork}/submissions', [SubmissionController::class, 'store'])
+        ->name('submissions.store');
 });

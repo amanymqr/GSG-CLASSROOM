@@ -47,6 +47,9 @@
                     <div id="flush-collapse{{ $classworkitem->id }}" class="accordion-collapse collapse"
                         aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                         <div class="accordion-body">{{ $classworkitem->description }}</div>
+                        <a href="{{ route('classroom.classwork.edit', [$classworkitem->classroom_id , $classworkitem->id]) }}" class="btn btn-sm btn-outline-primary">Edit</a>
+                        <a href="{{ route('classroom.classwork.show', [$classworkitem->classroom_id , $classworkitem->id]) }}" class="btn btn-outline-dark btn-sm">show</a>
+
                     </div>
                 </div>
             @endforeach

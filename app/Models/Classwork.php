@@ -57,9 +57,9 @@ class Classwork extends Model
             $builder->where('title', 'LIKE', '%' . $value . '%')
                 ->orWhere('description', 'LIKE', '%' . $value . '%');
         })
-        ->when($filters['type'] ?? '', function ($builder, $value) {
-            $builder->where('type', 'LIKE', '%' . $value . '%');
-        });
+            ->when($filters['type'] ?? '', function ($builder, $value) {
+                $builder->where('type', 'LIKE', '%' . $value . '%');
+            });
     }
 
 
@@ -99,5 +99,10 @@ class Classwork extends Model
     public function comments()
     {
         return  $this->morphMany(Comment::class, 'commentable')->latest();
+    }
+
+    public function submissions()
+    {
+        return $this->hasMany(Submission::class);
     }
 }

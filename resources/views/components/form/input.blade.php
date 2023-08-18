@@ -2,6 +2,7 @@
     'name', //requried
     'value' => '', //defualt value
     'type' => 'text',
+    'id'
 ])
 
 @php

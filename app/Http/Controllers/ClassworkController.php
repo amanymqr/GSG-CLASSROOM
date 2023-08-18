@@ -36,7 +36,7 @@ class ClassworkController extends Controller
         $classwork = $classroom->classworks()
             ->with('topic')
             ->filter($request->query( ))
-            ->orderBy('published_at')->paginate(5);
+            ->latest('published_at' )->paginate(5);
 
         return view('classwork.index', [
             'classroom' => $classroom,
