@@ -18,9 +18,14 @@ use Illuminate\Validation\ValidationException;
 
 class ClassroomsController extends Controller
 {
-
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->authorizeResource(Classroom::class);
+    }
     public function index()
     {
+        $this->authorize('view-any', Classroom::class);
         $classroom = Classroom::active()
             ->recent()
             // ->withoutGlobalScopes()
@@ -60,7 +65,7 @@ class ClassroomsController extends Controller
         try {
             $classroom = Classroom::create($request->all());
             //when create  classroom the role is teacher
-            $classroom->join( Auth::id(),'teacher');
+            $classroom->join(Auth::id(), 'teacher');
 
             DB::commit();
         } catch (Exception $e) {
@@ -75,16 +80,16 @@ class ClassroomsController extends Controller
     //---------------------------------------------------------------------------
 
 
-    public function show( Classroom $classroom)
+    public function show(Classroom $classroom)
     {
         // $classroom = Classroom::findOrFail($id);
-        $invitation_link= URL::temporarySignedRoute('classroom.join', now()->addHours(3) , [
-            'classroom'=>$classroom->id,
-            'code'=>$classroom->id,
+        $invitation_link = URL::temporarySignedRoute('classroom.join', now()->addHours(3), [
+            'classroom' => $classroom->id,
+            'code' => $classroom->id,
         ]);
         return view('classroom.show', [
             'classroom' => $classroom,
-            'invitation_link'=>$invitation_link,
+            'invitation_link' => $invitation_link,
 
         ]);
     }

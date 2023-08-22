@@ -72,8 +72,15 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/classroom/{classroom}/people', [ClassroomPeopleController::class, 'destroy'])
         ->name('classroom.people.destroy');
     Route::post('comments', [CommentController::class, 'store'])->name('comments.store');
+
+
     Route::post('classwork/{classwork}/submissions', [SubmissionController::class, 'store'])
-        ->name('submissions.store');
+        ->name('submissions.store')
+        ->middleware('can:create , APP\Model\classwork');
+
+
     Route::get('submissions/{submission}/file', [SubmissionController::class, 'file'])
         ->name('submissions.file');
+
+
 });
