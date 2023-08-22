@@ -81,34 +81,39 @@
 
 
             <div class="col-md-4">
-                @if ($submissions->count())
-                    <h4>submissions</h4>
+                @can('submissions.create', [$classwork])
 
-                    <ul>
-                        @foreach ($submissions as $submission)
-                            <li><a href="{{ route('submissions.file', $submission->id) }}">File
-                                    #{{ $loop->iteration }}</a></li>
-                        @endforeach
 
-                    </ul>
-                @else
-                    <div class="card">
-                        <div class="card-body py-4">
-                            <h4 class="text-success  text-center">submissions</h4>
-                            <form action="{{ route('submissions.store', $classwork->id) }}" method="post"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <x-form.floating-control name="files" placeholder="">
-                                    <x-form.input type="file" name="files[]" multiple placeholder="select file" />
-                                </x-form.floating-control>
-                                <button type="submit" class="btn btn-success w-100">submit</button>
-                            </form>
+                    @if ($submissions->count())
+                        <div class="card  submissions text-success ">
+                            <div class="card-body">
+                                <h4>submissions</h4>
+                                <ul>
+                                    @foreach ($submissions as $submission)
+                                        <li><a href="{{ route('submissions.file', $submission->id) }}">File
+                                                #{{ $loop->iteration }} </a></li>
+                                    @endforeach
+
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-
-                @endif
-            </div>
-
+                    @else
+                        <div class="card">
+                            <div class="card-body py-4">
+                                <h4 class="text-success  text-center">submissions</h4>
+                                <form action="{{ route('submissions.store', $classwork->id) }}" method="post"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <x-form.floating-control name="files" placeholder="">
+                                        <x-form.input type="file" name="files[]" multiple placeholder="select file" />
+                                    </x-form.floating-control>
+                                    <button type="submit" class="btn btn-success w-100">submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            @endcan
 
 
 
@@ -127,13 +132,13 @@
                         <input type="hidden" name="id" value="{{ $classwork->id }}">
                         <input type="hidden" name="type" value=" classwork">
                         <div class="d-flex ">
-                            <div class="col-8">
+                            <div class="col-11">
                                 <x-form.floating-control name="content" placeholder="comment">
                                     <x-form.textarea name="content" :value="$classwork->content" placeholder="comment" />
                                 </x-form.floating-control>
                             </div>
-                            <div class="ms-1">
-                                <button class="btn btn-outline-success" type="submit">post</button>
+                            <div class="ms-1 mt-4">
+                                <button class="btn btn-sm btn-outline-success" type="submit">post</button>
 
                             </div>
                     </form>
@@ -141,22 +146,34 @@
             </div>
 
 
-                @foreach ($classwork->comments as $comment)
-                    <div class="card ">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center">
-                                <img class="rounded-circle " style="width: 40px"
-                                    src="https://ui-avatars.com/api/?name={{ $comment->user->name }}" alt="">
-                                <span style="font-size: 12px" class="ms-2 mb-0">By:{{ $comment->user->name }}. Time{{ $comment->created_at->diffForHumans() }}</span>
-                            </div>
-                            <p style="font-size: 18px " class="ms-5 mb-0 text-secondary">{{ $comment->content }}</p>
+            @foreach ($classwork->comments as $comment)
+                <div class="card border-0 "
+                    style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center  text-secondary">
+                            <img class="rounded-circle " style="width: 40px"
+                                src="https://ui-avatars.com/api/?name={{ $comment->user->name }}" alt="">
+                            <span style="font-size: 12px" class="ms-2 mb-0">By:{{ $comment->user->name }}.
+                                Time{{ $comment->created_at->diffForHumans() }}</span>
                         </div>
+                        <p style="font-size: 14px " class="ms-5 mb-0">{{ $comment->content }}</p>
                     </div>
-                @endforeach
+                </div>
+            @endforeach
 
 
         </div>
 
+        {{--  <div class="card mt-4">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <img class="rounded-circle"
+                        src="https://ui-avatars.com/api/?name={{ auth()->user()->name }}" alt="{{ auth()->user()->name }} Avatar">
+                    <input type="text" class="form-control ms-2" placeholder="Add a comment...">
+                    <button class="btn btn-primary ms-2">Post</button>
+                </div>
+            </div>
+        </div>  --}}
 
 
 

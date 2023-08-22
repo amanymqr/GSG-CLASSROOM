@@ -77,23 +77,27 @@
 
         <div class="row mb-4">
             <div class="col-md-6 d-flex align-items-center justify-content-start">
-                <div class="dropdown ">
-                    <button class="btn btn-sm btn-outline-success dropdown-toggle " type="button" id="dropdownMenuButton1"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        + create
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item"
-                                href="{{ route('classroom.classwork.create', ['classroom' => $classroom->id, 'type' => 'assignment']) }}">Assignment</a>
-                        </li>
-                        <li><a class="dropdown-item"
-                                href="{{ route('classroom.classwork.create', ['classroom' => $classroom->id, 'type' => 'question']) }}">Question</a>
-                        </li>
-                        <li><a class="dropdown-item"
-                                href="{{ route('classroom.classwork.create', ['classroom' => $classroom->id, 'type' => 'material']) }}">Material</a>
-                        </li>
-                    </ul>
-                </div>
+                @can('classworks.create', [$classroom])
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            + create
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item"
+                                    href="{{ route('classroom.classwork.create', ['classroom' => $classroom->id, 'type' => 'assignment']) }}">Assignment</a>
+                            </li>
+                            <li><a class="dropdown-item"
+                                    href="{{ route('classroom.classwork.create', ['classroom' => $classroom->id, 'type' => 'question']) }}">Question</a>
+                            </li>
+                            <li><a class="dropdown-item"
+                                    href="{{ route('classroom.classwork.create', ['classroom' => $classroom->id, 'type' => 'material']) }}">Material</a>
+                            </li>
+                        </ul>
+                    </div>
+                @endcan
+
+
             </div>
 
 

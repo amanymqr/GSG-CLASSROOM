@@ -12,12 +12,15 @@ use App\Models\ClassworkUser;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class SubmissionController extends Controller
 {
     public function store(Request $request, Classwork $classwork)
     {
+        Gate::authorize('submissions.create', [$classwork]);
+
         $request->validate([
             'files' => 'required|array',
             'files.*' => [

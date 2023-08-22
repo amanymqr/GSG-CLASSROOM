@@ -67,12 +67,11 @@ Route::middleware(['auth'])->group(function () {
     Route::resources(['classroom' => ClassroomsController::class,]);
     Route::resources(['classroom.topics' => TopicsController::class,]);
     Route::resources(['classroom.classwork' => ClassworkController::class,]);
-
-    Route::get('/classroom/{classroom}/people', [ClassroomPeopleController::class, 'index'])->name('classroom.people');
-
-    Route::delete('/classroom/{classroom}/people', [ClassroomPeopleController::class, 'destroy'])->name('classroom.people.destroy');
+    Route::get('/classroom/{classroom}/people', [ClassroomPeopleController::class, 'index'])
+        ->name('classroom.people');
+    Route::delete('/classroom/{classroom}/people', [ClassroomPeopleController::class, 'destroy'])
+        ->name('classroom.people.destroy');
     Route::post('comments', [CommentController::class, 'store'])->name('comments.store');
-
     Route::post('classwork/{classwork}/submissions', [SubmissionController::class, 'store'])
         ->name('submissions.store');
     Route::get('submissions/{submission}/file', [SubmissionController::class, 'file'])
