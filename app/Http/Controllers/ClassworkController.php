@@ -36,7 +36,7 @@ class ClassworkController extends Controller
 
     public function index(Request $request, Classroom $classroom)
     {
-        $this->authorize('viewAny', [Classwork::class, $classroom]);
+        $this->authorize('view-Any', [Classwork::class, $classroom]);
         $classwork = $classroom->classworks()
             ->with('topic')
             ->filter($request->query())
@@ -52,7 +52,7 @@ class ClassworkController extends Controller
 
     public function create(Request $request, Classroom $classroom)
     {
-        $this->authorize('create', [Classwork::class , $classroom]);
+        $this->authorize('create', [Classwork::class, $classroom]);
         // $response = Gate::inspect('classworks.create', [$classroom]);
         // if (!$response->allowed()) {
         //     abort(403, $response->message());
@@ -72,9 +72,7 @@ class ClassworkController extends Controller
 
     public function store(Request $request, Classroom $classroom)
     {
-
-        $this->authorize('create', [Classwork::class , $classroom]);
-
+        $this->authorize('create', [Classwork::class, $classroom]);
         // if (Gate::denies('classworks.create', [$classroom])) {
         //     abort(403, 'not authorized');
         // };
@@ -134,7 +132,6 @@ class ClassworkController extends Controller
 
     public function edit(Request $request, Classroom $classroom, Classwork $classwork)
     {
-        $this->authorize('update',  $classwork);
 
         // $type = $this->getType($request);
         // if ($classwork->getType == 'assignment') {
@@ -145,14 +142,8 @@ class ClassworkController extends Controller
 
         $classwork = $classroom->classworks()
             ->findOrFail($classwork->id);
+        $this->authorize('update',  $classwork);
         $type = $classwork->type->value;
-
-        $assigned = $classwork->users()
-            ->pluck('id')
-            ->toArray(); // تحول العنصر لاوبجكت
-
-        // return view('classworks.edit', compact('classroom', 'classwork', 'type', 'assigned'));
-        // dd($type);
         $assigned = $classwork->users()->pluck('id')->toArray();
         return view('classwork.edit', compact('classroom', 'type', 'classwork', 'assigned'));
     }
@@ -180,9 +171,8 @@ class ClassworkController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Classroom $classroom , Classwork $classwork)
+    public function destroy(Classroom $classroom, Classwork $classwork)
     {
         $this->authorize('delete',  $classwork);
-
     }
 }

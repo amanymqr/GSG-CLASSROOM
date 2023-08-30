@@ -12,24 +12,27 @@ class ClassworkPolicy
     /**
      * Determine whether the user can view any models.
      */
-
-    public function before(User $user, $abitiy)
+    public function before(User $user, $abillity)
     {
         if ($user->super_admin) {
             return true;
-        };
+        }
     }
 
-
-
+    public function after(User $user, $abillity)
+    {
+        if ($user->super_admin) {
+            return true;
+        }
+    }
 
 
     public function viewAny(User $user, Classroom $classroom): bool
     {
-        // dd($classroom);
-        return $user->classrooms()
-            ->wherePivot('classroom_id', '=', $classroom->id)
-            ->wherePivot('role', '=', 'teacher')->exists();
+        // dd($classroom , $user->classrooms);
+        return $classroom->users()
+            ->wherePivot('user_id', '=', $user->id)
+            ->exists();
     }
 
     /**
@@ -47,17 +50,27 @@ class ClassworkPolicy
     /**
      * Determine whether the user can create models.
      */
+    // public function create(User $user, Classroom $classroom): bool
+    // {
+    //     $result = $user->classrooms()
+    //         ->withoutGlobalScope(UserClassroomScope::class)
+    //         ->wherePivot('classroom_id', '=', $classroom->id)
+    //         ->wherePivot('role', '=', 'teacher')->exists();
+
+
+    //     return ($result);
+    // }
+
     public function create(User $user, Classroom $classroom): bool
     {
-        $result = $user->classrooms()
+
+        $result = $classroom->users()
             ->withoutGlobalScope(UserClassroomScope::class)
-            ->wherePivot('classroom_id', '=', $classroom->id)
+            ->wherePivot('user_id', '=', $user->id)
             ->wherePivot('role', '=', 'teacher')->exists();
-
-
+// dd($result);
         return ($result);
     }
-
     /**
      * Determine whether the user can update the model.
      */

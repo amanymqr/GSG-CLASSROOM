@@ -68,12 +68,12 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(
             Classroom::class,
-            'classroom_user', //related model
-            'classroom_id', //pivot table
+            'classroom_user',   //pivot table
             'user_id',     //fk for current model in pivot table
-            'id',
-            'id',
-        )->wherePivot('role', 'created_at');
+            'classroom_id',          //fk for related model in pivot table
+            'id',               //PK for current model
+            'id',               //PK for related model
+        )->withPivot(['role' , 'created_at']);
     }
 
     public function createdClassrooms()

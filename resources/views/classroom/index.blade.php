@@ -1,12 +1,12 @@
 @extends('layouts.master')
-@section('title', 'classrooms')
-@section('style')
-<style>
+@section('title', 'Classrooms' )
 
-    h3{
-        color:rgb(64, 63, 66);
+@section('style')
+    <style>
+        h3 {
+            color: rgb(64, 63, 66);
         }
-</style>
+    </style>
 
 
 
@@ -15,7 +15,7 @@
 @section('content')
 
     <x-alert />
-
+    {{--  { !!__('pagination.next')!! }  --}}
 
 
     <div class="cards-classroom m-4 text-center">

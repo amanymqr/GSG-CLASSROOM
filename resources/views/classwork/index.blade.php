@@ -77,7 +77,7 @@
 
         <div class="row mb-4">
             <div class="col-md-6 d-flex align-items-center justify-content-start">
-                @can('create', ['App\\Models\Classwork , $classroom'])
+                @can('create', ['App\\Models\\Classwork', $classroom])
                     <div class="dropdown">
                         <button class="btn btn-sm btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton1"
                             data-bs-toggle="dropdown" aria-expanded="false">
