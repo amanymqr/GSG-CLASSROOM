@@ -40,13 +40,22 @@ class ClassworkController extends Controller
         $classwork = $classroom->classworks()
             ->with('topic')
             ->filter($request->query())
-            ->latest('published_at')->paginate(5);
+            ->latest('published_at')
+            ->where(function($query) {
+                $query->wherehas('users', function($query) {
+                    $query->where('id', '=', Auth::id());
+                })
+                ->orwherehas('classroom.teachers', function($query) {
+                    $query->where('id', '=', Auth::id());
+                });
+            })->paginate(5);
 
         return view('classwork.index', [
             'classroom' => $classroom,
             'classwork' => $classwork
         ]);
     }
+
 
 
 
@@ -156,6 +165,7 @@ class ClassworkController extends Controller
 
         $this->authorize('update',  $classwork);
         $type = $classwork->type;
+        // return strip_tags($request->post('description'));
         $validate =  $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],

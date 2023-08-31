@@ -7,9 +7,9 @@
             <x-form.input name="title" :value="$classwork->title" placeholder="Title" />
         </x-form.floating-control>
 
-        <x-form.floating-control name="description" placeholder="Description">
-            <x-form.textarea name="description" :value="$classwork->description" placeholder="Description" />
-        </x-form.floating-control>
+        {{--  <x-form.floating-control name="description" placeholder="Description">  --}}
+        <x-form.textarea name="description" :value="$classwork->description" />
+        {{--  </x-form.floating-control>  --}}
     </div>
 
 
@@ -36,11 +36,13 @@
 
         @if ($type == 'assignment')
             <x-form.floating-control name="options.grade" placeholder="Grade">
-                <x-form.input type="number" :value="$classwork->options['grade'] ?? ''" name="options[grade]" min="0" placeholder="Grade" />
+                <x-form.input type="number" :value="$classwork->options['grade'] ?? ''" name="options[grade]" min="0"
+                    placeholder="Grade" />
             </x-form.floating-control>
 
             <x-form.floating-control name="options.due" placeholder="Due Date">
-                <x-form.input type="date" :value="$classwork->options['due'] ?? ''" name="options[due]" min="0" placeholder="Due Date" />
+                <x-form.input type="date" :value="$classwork->options['due'] ?? ''" name="options[due]" min="0"
+                    placeholder="Due Date" />
             </x-form.floating-control>
         @endif
 
@@ -55,3 +57,15 @@
         </select>
     </div>
 </div>
+
+@push('scripts')
+    <script src="https://cdn.tiny.cloud/1/v8qfq4vy889x4834jzyr7wdvsydua9a83bot0mchq3w1mj6q/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#description',
+            plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        });
+    </script>
+@endpush

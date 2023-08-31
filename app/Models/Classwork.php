@@ -91,6 +91,11 @@ class Classwork extends Model
         return $this->belongsTo(Topic::class);
     }
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function users()
     {
         return $this->belongsToMany(User::class)->withPivot('grade', 'submitted_at', 'status', 'created_at')->using(ClassworkUser::class);

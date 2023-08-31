@@ -10,6 +10,7 @@ use App\Http\Controllers\JoinClassroomController;
 use App\Http\Controllers\ClassroomPeopleController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\SubmissionController;
+use App\Http\Middleware\ApplyUserPreferences;
 use App\Models\Submission;
 
 Route::get('/', function () {

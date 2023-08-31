@@ -2,17 +2,16 @@
     'name', //requried
     'value' => '', //defualt value
     'type' => 'text',
+    'id' => null,
 ])
 
 
-<textarea
-
-        name="{{ $name }}"
+<textarea name="{{ $name }}"
         id="{{ $id ?? $name }}"
-    {{ $attributes->class(['form-control', 'is-invalid' => $errors->has($name)]) }}>{{ old($name, $value)  }} </textarea>
-{{--  ->merge([
-            'type' => 'text',
-        ]) == 'type' => 'text',  --}}
+    {{ $attributes->merge([
+
+    ])->class(['form-control', 'is-invalid' => $errors->has($name)]) }}>{{ old($name, $value) }} </textarea>
+
 
 
 

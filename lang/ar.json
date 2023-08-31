@@ -1,8 +1,8 @@
 {
-    "(Classrooms)":"(الصفوف)",
-    "(Join Classroom)":"(الالتحاق بالصف)",
-    "(Create Classroom)":"(انشاء صف)",
-    "(Trashed  Classroom)":"( الصفوف المحذوفة)",
+    "Classrooms":"الصفوف",
+    "Join Classroom":"الالتحاق بالصف",
+    "Create Classroom":"انشاء صف",
+    "Trashed  Classroom":" الصفوف المحذوفة",
     "(and :count more error)": "(و :count خطأ إضافي)",
     "(and :count more errors)": "(و :count أخطاء إضافية)",
     "A new verification link has been sent to the email address you provided during registration.": "تم إرسال رابط تحقق جديد إلى عنوان البريد الإلكتروني الذي قمت بالتسجيل به.",

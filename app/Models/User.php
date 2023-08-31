@@ -73,7 +73,7 @@ class User extends Authenticatable
             'classroom_id',          //fk for related model in pivot table
             'id',               //PK for current model
             'id',               //PK for related model
-        )->withPivot(['role' , 'created_at']);
+        )->withPivot(['role', 'created_at']);
     }
 
     public function createdClassrooms()
@@ -103,5 +103,10 @@ class User extends Authenticatable
     public function submissions()
     {
         return $this->hasMany(Submission::class);
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class , 'user_id' , 'id')->withDefault();
     }
 }

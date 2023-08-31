@@ -70,9 +70,8 @@
 
 
                 <div>
-                    <p class="mt-3">
-                        {{ $classwork->description }}
-                    </p>
+                    {!! $classwork->description !!}
+
                 </div>
 
                 <hr class="divider">

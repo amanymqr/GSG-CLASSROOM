@@ -15,13 +15,7 @@
             @csrf
             @method('put')
 
-
             @include('classwork._form')
-
-
-
-
-
             <button class="btn btn-secondary" type="submit">update</button>
 
 

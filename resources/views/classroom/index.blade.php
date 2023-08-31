@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Classrooms' )
+@section('title', __('Classrooms'))
 
 @section('style')
     <style>
@@ -15,12 +15,15 @@
 @section('content')
 
     <x-alert />
-    {{--  { !!__('pagination.next')!! }  --}}
+    {{--  {!! __('pagination.next') !!}
+
+
+    {!! __('pagination.previous') !!}  --}}
 
 
     <div class="cards-classroom m-4 text-center">
         <div class="container">
-            <h3 class="m-5">My Classrooms</h3>
+            <h3 class="m-5">My {{ __('Classrooms') }}</h3>
 
             <div class="row">
 
