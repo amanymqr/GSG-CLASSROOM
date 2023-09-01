@@ -2,29 +2,47 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\classworkType;
+use Error;
+use ValueError;
 use App\Models\Classroom;
 use App\Models\Classwork;
 use Illuminate\View\View;
+use App\Enums\classworkType;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\Http\Response;
 
+use Illuminate\Validation\Rule;
+use App\Events\ClassworkCreated;
 use function PHPSTORM_META\type;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Database\QueryException;
 
 class ClassworkController extends Controller
 {
-    protected function getType(Request $request)
+    // protected function getType(Request $request)
+    // {
+    //     try {
+    //         return classworkType::from($request->query('type'));
+    //         // $allowed_types = [
+    //         //     Classwork::TYPE_ASSIGNMENT,
+    //         //     Classwork::TYPE_MATERIAL,
+    //         //     Classwork::TYPE_QUESTION,
+    //         // ];
+    //         // if (!in_array($type, $allowed_types)) {
+    //         //     $type = Classwork::TYPE_ASSIGNMENT;
+    //         // }
+    //         // return $type;
+    //     } catch (Error $e) {
+    //         return classwork::TYPE_ASSIGNMENT;
+    //     }
+    // }
+    protected function getType(Request $request): string
     {
-        $type = $request->query('type');
+        $type =request()->query('type') ;
         $allowed_types = [
-            Classwork::TYPE_ASSIGNMENT,
-            Classwork::TYPE_MATERIAL,
-            Classwork::TYPE_QUESTION,
+            Classwork::TYPE_ASSIGNMENT, Classwork::TYPE_MATERIAL, Classwork::TYPE_QUESTION
         ];
         if (!in_array($type, $allowed_types)) {
             $type = Classwork::TYPE_ASSIGNMENT;
@@ -41,15 +59,14 @@ class ClassworkController extends Controller
             ->with('topic')
             ->filter($request->query())
             ->latest('published_at')
-            ->where(function($query) {
-                $query->wherehas('users', function($query) {
+            ->where(function ($query) {
+                $query->wherehas('users', function ($query) {
                     $query->where('id', '=', Auth::id());
                 })
-                ->orwherehas('classroom.teachers', function($query) {
-                    $query->where('id', '=', Auth::id());
-                });
+                    ->orwherehas('classroom.teachers', function ($query) {
+                        $query->where('id', '=', Auth::id());
+                    });
             })->paginate(5);
-
         return view('classwork.index', [
             'classroom' => $classroom,
             'classwork' => $classwork
@@ -62,18 +79,7 @@ class ClassworkController extends Controller
     public function create(Request $request, Classroom $classroom)
     {
         $this->authorize('create', [Classwork::class, $classroom]);
-        // $response = Gate::inspect('classworks.create', [$classroom]);
-        // if (!$response->allowed()) {
-        //     abort(403, $response->message());
-        // }
-        // Gate::authorize('classworks.create', [$classroom]);
-        // if (!Gate::allows('classworks.create', [$classroom])) {
-        //     abort(403, 'not authorized');
-        // };
         $type = $this->getType($request);
-
-        // dd(($type));
-        // $topics=$classroom->topics();
         $classwork = new Classwork();
         return view('classwork.create', compact('classroom', 'classwork', 'type'));
     }
@@ -82,12 +88,7 @@ class ClassworkController extends Controller
     public function store(Request $request, Classroom $classroom)
     {
         $this->authorize('create', [Classwork::class, $classroom]);
-        // if (Gate::denies('classworks.create', [$classroom])) {
-        //     abort(403, 'not authorized');
-        // };
         $type = $this->getType($request);
-
-        // Validate the request data
         $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
@@ -97,7 +98,7 @@ class ClassworkController extends Controller
         ]);
         $request->merge([
             'user_id' => Auth::id(),
-            'type' => $type->value,
+            'type' => $type,
         ]);
 
 
@@ -106,11 +107,13 @@ class ClassworkController extends Controller
             DB::transaction(function () use ($classroom, $request, $type) {
                 $classwork = $classroom->classworks()->create($request->all());
                 $classwork->users()->attach($request->input('studets'));
+                // event(new ClassworkCreated($classwork));
+                ClassworkCreated::dispatch($classwork);
             });
 
             // Redirect with a success message
 
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
             // Redirect back with an error message
             return back()
                 ->with('msg',  $e->getMessage())->with('type', 'danger');
@@ -142,12 +145,6 @@ class ClassworkController extends Controller
     public function edit(Request $request, Classroom $classroom, Classwork $classwork)
     {
 
-        // $type = $this->getType($request);
-        // if ($classwork->getType == 'assignment') {
-        //     $type = $this->getType($request);
-        // } else {
-        //     $type = $classwork->type;
-        // }
 
         $classwork = $classroom->classworks()
             ->findOrFail($classwork->id);
@@ -157,15 +154,16 @@ class ClassworkController extends Controller
         return view('classwork.edit', compact('classroom', 'type', 'classwork', 'assigned'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
+
+
+
     public function update(Request $request, Classroom $classroom, Classwork $classwork)
     {
 
         $this->authorize('update',  $classwork);
-        $type = $classwork->type;
-        // return strip_tags($request->post('description'));
+        $type = $classwork->type->value;
+        // return strip_tags($request->post('description',['p', 'h1' ,'li' ,'ol']));
         $validate =  $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],

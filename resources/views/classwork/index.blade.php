@@ -135,7 +135,7 @@
                     <div id="collapse{{ $classworkitem->id }}" class="accordion-collapse collapse"
                         aria-labelledby="heading{{ $classworkitem->id }}" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            {{ $classworkitem->description }}
+                            {!! $classworkitem->description !!}
                             <a href="{{ route('classroom.classwork.edit', [$classworkitem->classroom_id, $classworkitem->id]) }}"
                                 class="btn btn-sm text-primary"><i class="bi bi-pencil-square"></i></a>
                             <a href="{{ route('classroom.classwork.show', [$classworkitem->classroom_id, $classworkitem->id]) }}"
@@ -151,6 +151,12 @@
 
         {{ $classwork->withQueryString()->links() }}
 
+        @push('scripts')
+            <script>
+                const classroomId = "{{ $classwork->classroom_id }}"
+            </script>
 
+            @vite(['resources/js/app.js'])
+        @endpush
 
     @stop

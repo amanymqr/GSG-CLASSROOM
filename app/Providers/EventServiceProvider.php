@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Listeners\PostInClassroomStream;
 use App\Models\Classroom;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -17,13 +18,17 @@ class EventServiceProvider extends ServiceProvider
      */
 
 
-//to define observers
+    //to define observers
     // protected $observers = [
     //     Classroom::class => [ClassroomObserver::class],
     // ];
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        ClassworkCreated::class => [
+            PostInClassroomStream::class,
+
         ],
     ];
 
@@ -32,7 +37,11 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+
+        // Event::listen('classwork.created', function ($classroom, $classwork) {
+        //     dd('event triggeres');
+        // });
+        Event::listen('classwork.created', [new PostInClassroomStream, 'handle']);
     }
 
     /**

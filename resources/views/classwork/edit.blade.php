@@ -11,7 +11,8 @@
 
         <h4>update Classwork</h4>
 
-        <form action="{{ route('classroom.classwork.update', [$classroom->id, $classwork->id , 'type' => $type]) }}" method="post">
+        <form action="{{ route('classroom.classwork.update', [$classroom->id, $classwork->id ,  'type' => $classwork->type]) }}" method="post">
+            {{--  <form action="{{ route('classroom.classwork.update', [$classroom->id, $classwork->id]) }}" method="post">  --}}
             @csrf
             @method('put')
 

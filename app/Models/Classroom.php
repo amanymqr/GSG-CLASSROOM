@@ -78,6 +78,10 @@ class Classroom extends Model
         return $this->users()->wherePivot('role' , '=' , 'student');
     }
 
+    public function streams(){
+        return $this->hasMany(Stream::class)->latest();
+    }
+
 
 
     //change the route key name from id to code
