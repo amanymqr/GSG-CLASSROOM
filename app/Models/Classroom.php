@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Exception;
 use App\Models\Topic;
 use App\Models\Classwork;
@@ -34,6 +35,20 @@ class Classroom extends Model
         'code',
         'user_id'
     ];
+
+
+    // protected $appends = [
+    //     'cover_image_url',
+    // ];
+//add accessor data to api
+
+    protected $hidden =[
+        'deleted_at',
+        'cover_image_path',
+    ];
+
+
+
     //global scope
     protected static function booted()
     {
@@ -55,6 +70,10 @@ class Classroom extends Model
     {
         return $this->hasMany(Topic::class, "classroom_id", "id");
     }
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
 
     public function users()
     {
@@ -65,20 +84,22 @@ class Classroom extends Model
             'user_id',          //fk for related model in pivot table
             'id',               //PK for current model
             'id',               //PK for related model
-        )->withPivot(['role' , 'created_at']);
-
+        )->withPivot(['role', 'created_at']);
     }
 
 
-    public function teachers(){
-        return $this->users()->wherePivot('role' , '=' , 'teacher');
+    public function teachers()
+    {
+        return $this->users()->wherePivot('role', '=', 'teacher');
     }
 
-    public function students(){
-        return $this->users()->wherePivot('role' , '=' , 'student');
+    public function students()
+    {
+        return $this->users()->wherePivot('role', '=', 'student');
     }
 
-    public function streams(){
+    public function streams()
+    {
         return $this->hasMany(Stream::class)->latest();
     }
 
@@ -126,15 +147,14 @@ class Classroom extends Model
 
     public function join($user_id, $role = 'student')
     {
-        $exists =$this->users()->where('user_id' , '=' , $user_id)->exists();
-        if($exists){
-        throw new Exception("You are already joined in this class");
+        $exists = $this->users()->where('user_id', '=', $user_id)->exists();
+        if ($exists) {
+            throw new Exception("You are already joined in this class");
         }
-        return $this->users()->attach($user_id , [
+        return $this->users()->attach($user_id, [
             'role' => $role,
             'created_at' => now(),
         ]);
-
     }
 
     //get{{ attribute }}Attribute//accessor
@@ -148,4 +168,13 @@ class Classroom extends Model
     {
         return route("classroom.show", $this->id);
     }
+
+    // public function getCoverImagePathAttribute($value)
+    // {
+    //     if ($this->cover_image_path) {
+    //         return  Storage::disk('public')->url($this);
+    //         // asset('storage/' . $va);
+    //     }
+    //     return 'https://placehold.co/800x300';
+    // }
 }

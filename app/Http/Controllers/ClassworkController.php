@@ -106,7 +106,8 @@ class ClassworkController extends Controller
             // Use a transaction to save the classwork and related data
             DB::transaction(function () use ($classroom, $request, $type) {
                 $classwork = $classroom->classworks()->create($request->all());
-                $classwork->users()->attach($request->input('studets'));
+                $classwork->users()->attach($request->input('students'));
+
                 // event(new ClassworkCreated($classwork));
                 ClassworkCreated::dispatch($classwork);
             });
@@ -172,7 +173,9 @@ class ClassworkController extends Controller
             'options.due' => ['nullable', 'date', 'after:published_at'],
         ]);
         $classwork->update($request->all());
-        return view('classwork.edit', compact('classroom', 'classwork'))
+        $classwork->users()->sync($request->input('students'));
+
+        return redirect()->route('classroom.classwork.edit', compact('classroom', 'classwork'))
             ->with('success', 'Classwork Updated');
     }
 

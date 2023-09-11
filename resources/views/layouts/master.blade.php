@@ -1,5 +1,5 @@
 <!doctype html>
-<html  dir="{{App::isLocale('ar') ? 'rtl' : 'ltr' }}" lang="{{ App::currentLocale()}}">
+<html dir="{{ App::isLocale('ar') ? 'rtl' : 'ltr' }}" lang="{{ App::currentLocale() }}">
 
 <head>
     <!-- Required meta tags -->
@@ -47,18 +47,13 @@
 
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        {{--  <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>  --}}
-                        {{--  <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>  --}}
+                    <ul class="navbar-nav me-auto  ">
+                        <x-user-notification-menue count="5" />
 
                     </ul>
                     <div class="d-flex align-items-center justify-content-center">
 
-                        <ul class="navbar-nav mx-1  ">
+                        <ul class="navbar-nav   ">
                             <li class="nav-item dropdown  ">
                                 <a class="fs-5 mx-2 text-dark " href="#" id="navbarDropdown" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
@@ -88,6 +83,8 @@
 
 
                 </div>
+
+
             </div>
         </nav>
 
@@ -105,8 +102,18 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </script>
+
+    <script>
+        var classroomId;
+        const userId = "{{ Auth::id() }}"
     </script>
     @stack('scripts')
+    @vite(['resources/js/app.js'])
 </body>
 
 </html>

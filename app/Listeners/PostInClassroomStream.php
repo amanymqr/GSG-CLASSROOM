@@ -28,7 +28,7 @@ class PostInClassroomStream
         $classwork = $event->classwork;
         $content = __(':name posted a new :type: :title',[
             'name' => $classwork->user->name,
-            'type' => $classwork->type,
+            'type' => $classwork->type->value,
             'title' => $classwork->title,
         ]);
 

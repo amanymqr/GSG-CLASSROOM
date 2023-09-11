@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('streams', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignId('classroom_id')->nullable()->constrained('classrooms','id')->cascadeOnDelete();
+            $table->foreignId('classroom_id')->constrained('classrooms','id')->cascadeOnDelete();
             $table->foreignId('user_id')->nullable()->constrained('users','id')->nullOnDelete();
             $table->string('content',500);
             $table->string('link')->nullable();

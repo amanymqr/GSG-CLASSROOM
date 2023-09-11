@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\ClassworkCreated;
 use App\Listeners\PostInClassroomStream;
+use App\Listeners\SendNotificationToAssignedStudent;
 use App\Models\Classroom;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -28,7 +30,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         ClassworkCreated::class => [
             PostInClassroomStream::class,
-
+            SendNotificationToAssignedStudent::class,
         ],
     ];
 

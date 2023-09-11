@@ -39,4 +39,10 @@ class Stream extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function classwork()
+    {
+
+        return $this->belongsTo(Classwork::class);
+    }
 }

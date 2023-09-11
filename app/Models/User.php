@@ -3,7 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use App\Models\Comment;
 use App\Models\Classroom;
 use App\Models\Submission;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail, HasLocalePreference
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -109,4 +110,19 @@ class User extends Authenticatable
     {
         return $this->hasOne(Profile::class , 'user_id' , 'id')->withDefault();
     }
+
+    public function routeNotificationForMail($notification = null)
+    { // بنحط اسم الحقل تبع الايميل اذا كان غير email notificationعشان يعرف وين يبعت ال
+        return $this->email;
+    }
+
+    public function recievesBroadcastNotificationsOn()
+    {
+        return 'Notifications.' . $this->id;
+    }
+
+    public function preferredLocale()
+    {
+        return $this->profile->locale;
+        }
 }
