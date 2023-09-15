@@ -135,7 +135,27 @@
                     <div id="collapse{{ $classworkitem->id }}" class="accordion-collapse collapse"
                         aria-labelledby="heading{{ $classworkitem->id }}" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            {!! $classworkitem->description !!}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {!! $classworkitem->description !!}
+
+                                </div>
+                                <div class="col-md-2">
+                                    {{ $classworkitem->assigned_count }}<br>
+                                    <div class="text-muted">{{ __('Assigned') }}</div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    {{ $classworkitem->turnedin_count }}<br>
+                                    <div class="text-muted">{{ __('Submitted') }}</div>
+                                </div>
+
+
+                                <div class="col-md-2">
+                                    {{ $classworkitem->graded_count }}<br>
+                                    <div class="text-muted">{{ __('Graded') }}</div>
+                                </div>
+                            </div>
                             <a href="{{ route('classroom.classwork.edit', [$classworkitem->classroom_id, $classworkitem->id]) }}"
                                 class="btn btn-sm text-primary"><i class="bi bi-pencil-square"></i></a>
                             <a href="{{ route('classroom.classwork.show', [$classworkitem->classroom_id, $classworkitem->id]) }}"
@@ -158,4 +178,3 @@
         @endpush
 
     @stop
-

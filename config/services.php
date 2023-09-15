@@ -30,5 +30,9 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    'hadara' => [
+        'key' => env('HADARA_KEY'),
+    ],
+    'api_key' => env('API_KEY'),
 
 ];

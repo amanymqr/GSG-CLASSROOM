@@ -13,7 +13,8 @@ class AccessTokensController extends Controller
 {
     public function index(Request $request)
     {
-        return $request->user('sunctam')->user()->tokens;
+
+        return $request->user('sanctum')->user()->tokens;
     }
 
     public function store(Request $request)

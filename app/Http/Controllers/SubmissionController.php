@@ -19,7 +19,8 @@ class SubmissionController extends Controller
 {
     public function store(Request $request, Classwork $classwork)
     {
-        Gate::authorize('submissions.create', [$classwork]);
+        // Gate::authorize('submissions.create', [$classwork]);
+        Gate::authorize('submissionsCreate', [classwork::class, $classwork]);
 
         $request->validate([
             'files' => 'required|array',
@@ -66,16 +67,6 @@ class SubmissionController extends Controller
     {
 
         $user = Auth::user();
-
-        // SELECT * FROM classroom_user
-        // WHERE user_id = ?
-        // AND role = teacher
-        // AND EXISTS (
-        // SELECT 1 FROM classworks WHERE classworks.classroom_id = classroom_user.classroom_id
-        // AND EXISTS (
-        // SELECT 1 from submissions where submissions.classwork_id = classworks.id id = ?)
-        // )
-
         $collection = DB::select('SELECT * FROM classroom_user
         WHERE user_id = ?
         AND role = ?
@@ -86,7 +77,13 @@ class SubmissionController extends Controller
         )
         ', [$user->id, 'teacher', $submission->id]);
         // dd($collection);
-        $isTeacher = $submission->classwork->classroom->teachers()->where('id', $user->id)->exists();
+        $isTeacher = $submission
+            ->classwork
+            ->classroom
+            ->teachers()
+            ->where('id', $user->id)
+            ->exists();
+
         $isOwner = $submission->user_id == $user->id;
         if (!$isTeacher && !$isOwner) {
             abort(403);

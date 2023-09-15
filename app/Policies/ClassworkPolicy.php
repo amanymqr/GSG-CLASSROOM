@@ -50,16 +50,7 @@ class ClassworkPolicy
     /**
      * Determine whether the user can create models.
      */
-    // public function create(User $user, Classroom $classroom): bool
-    // {
-    //     $result = $user->classrooms()
-    //         ->withoutGlobalScope(UserClassroomScope::class)
-    //         ->wherePivot('classroom_id', '=', $classroom->id)
-    //         ->wherePivot('role', '=', 'teacher')->exists();
 
-
-    //     return ($result);
-    // }
 
     public function create(User $user, Classroom $classroom): bool
     {
@@ -105,5 +96,21 @@ class ClassworkPolicy
     public function forceDelete(User $user, Classwork $classwork): bool
     {
         //
+    }
+
+    public function submissionsCreate(User $user, Classwork $classwork): bool
+    {
+        $teacher = $user->classrooms()
+            ->wherePivot('classroom_id', '=', $classwork->classroom_id)
+            ->wherePivot('role', '=', 'teacher')
+            ->exists();
+
+        if ($teacher) {
+            return false;
+        } else {
+            return $user->classworks()
+                ->wherePivot('classwork_id', '=', $classwork->id)
+                ->exists();
+        }
     }
 }

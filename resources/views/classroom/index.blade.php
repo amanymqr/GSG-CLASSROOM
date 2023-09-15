@@ -41,6 +41,14 @@
 {{--  @include('partisals.footer')  --}}
 @push('scripts')
     <script>
+        {{--  fetch('/api/v1/classrooms')
+            .then(res => res.json())
+            .then(json => {
+                let ul = document.getElementById('clasrooms')
+                for (let i in json) {
+                    ul.innerHTML += '<li>${json[i].name}</li>'
+                }
+            })  --}}
         console.log('@ stack')
     </script>
 @endpush

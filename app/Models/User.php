@@ -101,10 +101,11 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         return $this->hasMany(Comment::class);
     }
 
-    public function submissions()
+    public function submission()
     {
         return $this->hasMany(Submission::class);
     }
+
 
     public function profile()
     {
@@ -117,6 +118,11 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     }
 
     public function routeNotificationForVonage($notification = null)
+    {
+        return '972595143154';
+    }
+
+    public function routeNotificationForHadara($notification = null)
     {
         return '972595143154';
     }

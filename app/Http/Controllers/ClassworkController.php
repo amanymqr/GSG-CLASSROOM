@@ -21,26 +21,10 @@ use Illuminate\Database\QueryException;
 
 class ClassworkController extends Controller
 {
-    // protected function getType(Request $request)
-    // {
-    //     try {
-    //         return classworkType::from($request->query('type'));
-    //         // $allowed_types = [
-    //         //     Classwork::TYPE_ASSIGNMENT,
-    //         //     Classwork::TYPE_MATERIAL,
-    //         //     Classwork::TYPE_QUESTION,
-    //         // ];
-    //         // if (!in_array($type, $allowed_types)) {
-    //         //     $type = Classwork::TYPE_ASSIGNMENT;
-    //         // }
-    //         // return $type;
-    //     } catch (Error $e) {
-    //         return classwork::TYPE_ASSIGNMENT;
-    //     }
-    // }
+
     protected function getType(Request $request): string
     {
-        $type =request()->query('type') ;
+        $type = request()->query('type');
         $allowed_types = [
             Classwork::TYPE_ASSIGNMENT, Classwork::TYPE_MATERIAL, Classwork::TYPE_QUESTION
         ];
@@ -57,6 +41,18 @@ class ClassworkController extends Controller
         $this->authorize('view-Any', [Classwork::class, $classroom]);
         $classwork = $classroom->classworks()
             ->with('topic')
+            ->withCount([
+                'users as assigned_count' => function ($query) {
+                    $query->where('classwork_user.status', '=', 'assigned');
+                },
+                'users as turnedin_count' => function ($query) {
+                    $query->where('classwork_user.status', '=', 'submitted');
+                },
+                'users as graded_count' => function ($query) {
+                    $query->whereNotNull('classwork_user.grade');
+                },
+
+            ])
             ->filter($request->query())
             ->latest('published_at')
             ->where(function ($query) {
@@ -66,7 +62,7 @@ class ClassworkController extends Controller
                     ->orwherehas('classroom.teachers', function ($query) {
                         $query->where('id', '=', Auth::id());
                     });
-            })->paginate(5);
+            })->paginate(15);
         return view('classwork.index', [
             'classroom' => $classroom,
             'classwork' => $classwork
@@ -134,7 +130,7 @@ class ClassworkController extends Controller
         // Gate::authorize('classworks.view', [$classwork]);
 
         $submissions = Auth::user()
-            ->submissions()
+            ->submission()
             ->where('classwork_id', $classwork->id)->get();
         // $classwork->load('comments.user');
         return view('classwork.show', compact('classroom', 'classwork', 'submissions'));

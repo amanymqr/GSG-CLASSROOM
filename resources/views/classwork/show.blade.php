@@ -80,8 +80,8 @@
 
 
             <div class="col-md-4">
-                @can('submissions.create', [$classwork])
 
+                @can('submissionsCreate', ['App\\Models\classwork', $classwork])
 
                     @if ($submissions->count())
                         <div class="card  submissions text-success ">
@@ -92,7 +92,6 @@
                                         <li><a href="{{ route('submissions.file', $submission->id) }}">File
                                                 #{{ $loop->iteration }} </a></li>
                                     @endforeach
-
                                 </ul>
                             </div>
                         </div>
@@ -163,16 +162,6 @@
 
         </div>
 
-        {{--  <div class="card mt-4">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <img class="rounded-circle"
-                        src="https://ui-avatars.com/api/?name={{ auth()->user()->name }}" alt="{{ auth()->user()->name }} Avatar">
-                    <input type="text" class="form-control ms-2" placeholder="Add a comment...">
-                    <button class="btn btn-primary ms-2">Post</button>
-                </div>
-            </div>
-        </div>  --}}
 
 
 

@@ -35,6 +35,9 @@ class ClassroomController extends Controller
     public function store(Request $request)
     {
 
+        if (Auth::guard('sanctum')->user()->tokenCan('classrooms.create')) {
+            abort(403);
+        }
         $request->validate([
             'name' => ['required'],
         ]);
@@ -51,7 +54,7 @@ class ClassroomController extends Controller
      */
     public function show(Classroom $classroom)
     {
-        if (!Auth::guard('sanctum')->user()->tokenCan('classrooms.show')) {
+        if (!Auth::guard('sanctum')->user()->tokenCan('classrooms.read')) {
             abort(403);
         }
         $classroom->load('user')->loadCount('students');
@@ -91,7 +94,7 @@ class ClassroomController extends Controller
     public function destroy(string $id)
     {
         if (!Auth::guard('sanctum')->user()->tokenCan('classrooms.delete')) {
-            abort(403);
+            abort(403 , 'You cant delete this Classroom ');
         }
         Classroom::destroy($id);
         return response()->json([], 204);

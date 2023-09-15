@@ -3,14 +3,17 @@
 namespace App\Notifications;
 
 use App\Models\Classwork;
-use DragonCode\Support\Facades\Helpers\Arr;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use DragonCode\Support\Facades\Helpers\Arr;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Notifications\Channels\HadaraSMSChannel;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\VonageMessage;
 use Illuminate\Notifications\Messages\DatabaseMessage;
 use Illuminate\Notifications\Messages\BroadcastMessage;
-use Illuminate\Notifications\Messages\VonageMessage;
+use LaravelLang\Lang\Plugins\Spark\Stripe;
+use Nette\Utils\Strings;
 
 class NewClassworkNotification extends Notification
 {
@@ -31,7 +34,13 @@ class NewClassworkNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        $via = ['database', 'broadcast' , 'vonage' , 'mail'];
+        $via = [
+            'database',
+            HadaraSMSChannel::class,
+            'broadcast',
+            // 'vonage',
+            'mail',
+        ];
         // if ($notifiable->receive_mail_notifications) {
         //     $via[] = 'mail';
         // }
@@ -41,7 +50,7 @@ class NewClassworkNotification extends Notification
         // }
         return $via;
     }
-//'mail' ,
+    //'mail' ,
     /**
      * Get the mail representation of the notification.
      */
@@ -92,10 +101,15 @@ class NewClassworkNotification extends Notification
     }
 
 
-public function toVonage(object $notifiable): VonageMessage
+    public function toVonage(object $notifiable): VonageMessage
     {
         return (new VonageMessage)
             ->content(__('A new Classwork Created!'));
+    }
+
+    public function toHadara(object $notifiable): string
+    {
+        return (__('A new Classwork Created!'));
     }
 
     public function toBroadcast(object $notifiable): BroadcastMessage
