@@ -24,6 +24,7 @@ class SendNotificationToAssignedStudent
      */
     public function handle(ClassworkCreated $event): void
     {
+// dd($event);
         //عشان نبعت بس لواحد
         // $user = User::find(1);
         // $user->notify(new NewClassworkNotification($event->classwork));

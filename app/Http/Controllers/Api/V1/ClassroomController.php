@@ -26,7 +26,7 @@ class ClassroomController extends Controller
         $classrooms = Classroom::with('user:id,name', 'topics')->withCount('students as students')
             ->paginate(5);
 
-        return ClassroomResource::collection($classrooms);
+        return new ClassroomCollection($classrooms);
     }
 
     /**

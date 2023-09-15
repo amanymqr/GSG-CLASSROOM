@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\DatabaseMessage;
 use Illuminate\Notifications\Messages\BroadcastMessage;
+use Illuminate\Notifications\Messages\VonageMessage;
 
 class NewClassworkNotification extends Notification
 {
@@ -30,7 +31,7 @@ class NewClassworkNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        $via = ['database', 'broadcast' , 'mail'];
+        $via = ['database', 'broadcast' , 'vonage' , 'mail'];
         // if ($notifiable->receive_mail_notifications) {
         //     $via[] = 'mail';
         // }
@@ -40,25 +41,48 @@ class NewClassworkNotification extends Notification
         // }
         return $via;
     }
-
+//'mail' ,
     /**
      * Get the mail representation of the notification.
      */
+    // public function toMail(object $notifiable): MailMessage
+    // {
+    //     $classwork = $this->classwork;
+    //     $content = __(':name posted a new :type: :title', [
+    //         'name' => $classwork->user->name,
+    //         'type' => __($classwork->type->value),
+    //         'title' => $classwork->title,
+    //     ]);
+    //     return (new MailMessage)
+    //         ->subject(__('New :type',['type'=>$classwork->type->value])
+    //         )->greeting(__('Hi :name ', [
+    //             'name' => $notifiable->name
+    //         ]))
+    //         ->line($content)
+    //         ->action(__('Go to classwork'), route('classroom.classwork.show', [$classwork->classroom_id, $classwork->id]))
+    //         ->line('Thank you for using our application!');
+    // }
+
     public function toMail(object $notifiable): MailMessage
     {
         $classwork = $this->classwork;
         $content = __(':name posted a new :type: :title', [
             'name' => $classwork->user->name,
-            'type' => __($classwork->type->value),
+            'type' => $classwork->type->value,
             'title' => $classwork->title,
         ]);
         return (new MailMessage)
-            ->subject(__('New :type',['type'=>$classwork->type->value])
-            )->greeting(__('Hi :name ', [
+            ->subject(__('New :type', [
+                'type' => $classwork->type->value
+            ]))
+            ->greeting(__('Hi :name', [
                 'name' => $notifiable->name
             ]))
             ->line($content)
-            ->action(__('Go to classwork'), route('classroom.classwork.show', [$classwork->classroom_id, $classwork->id]))
+            ->action('Go to classwork', route('classroom.classwork.show', [
+                'classroom' => $classwork->classroom,
+                'classwork' => $classwork->id
+            ]))
             ->line('Thank you for using our application!');
     }
 
@@ -67,6 +91,12 @@ class NewClassworkNotification extends Notification
         return new DatabaseMessage($this->createMessage());
     }
 
+
+public function toVonage(object $notifiable): VonageMessage
+    {
+        return (new VonageMessage)
+            ->content(__('A new Classwork Created!'));
+    }
 
     public function toBroadcast(object $notifiable): BroadcastMessage
     {

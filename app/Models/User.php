@@ -116,6 +116,11 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         return $this->email;
     }
 
+    public function routeNotificationForVonage($notification = null)
+    {
+        return '972595143154';
+    }
+
     public function recievesBroadcastNotificationsOn()
     {
         return 'Notifications.' . $this->id;
