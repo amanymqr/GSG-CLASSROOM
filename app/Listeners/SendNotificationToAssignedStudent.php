@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Models\User;
 use App\Events\ClassworkCreated;
+use App\Jobs\SendClassroomNotification;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Notification;
@@ -24,7 +25,7 @@ class SendNotificationToAssignedStudent
      */
     public function handle(ClassworkCreated $event): void
     {
-// dd($event);
+        // dd($event);
         //عشان نبعت بس لواحد
         // $user = User::find(1);
         // $user->notify(new NewClassworkNotification($event->classwork));
@@ -36,6 +37,13 @@ class SendNotificationToAssignedStudent
         // }
 
         //باستخدام ال notification
-        Notification::send($event->classwork->users, new NewClassworkNotification($event->classwork));
+        $classwork = $event->classwork;
+        // Notification::send($classwork->users, new NewClassworkNotification($event->classwork));
+        $job =
+            new SendClassroomNotification($classwork->users, new NewClassworkNotification($classwork));
+
+        $job->onQueue('y');
+        dispatch($job)->onQueue('z');
+        // SendClassroomNotification::dispatch($classwork->users, new NewClassworkNotification($classwork));
     }
 }

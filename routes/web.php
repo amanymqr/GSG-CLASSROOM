@@ -9,9 +9,13 @@ use App\Http\Controllers\ClassroomsController;
 use App\Http\Controllers\JoinClassroomController;
 use App\Http\Controllers\ClassroomPeopleController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\PlansController;
 use App\Http\Controllers\SubmissionController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Middleware\ApplyUserPreferences;
 use App\Models\Submission;
+use DragonCode\Contracts\Cashier\Config\Payment;
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,7 +39,28 @@ Route::get('/', function () {
 
 require __DIR__ . '/auth.php';
 
+
+Route::get('plans', [PlansController::class, 'index'])
+    ->name('plans');
+
+
 Route::middleware(['auth'])->group(function () {
+
+    Route::get('subscriptions/{subscription}/pay', [PaymentsController::class, 'create'])
+        ->name('checkout');
+
+    Route::post('Subscriptions', [SubscriptionController::class, 'store'])
+        ->name('subscriptions.store');
+
+    Route::post('payments', [PaymentsController::class, 'store'])
+        ->name('payments.store');
+
+    Route::get('payments/success', [PaymentsController::class, 'seccess'])
+        ->name('paymnets.seccess');
+
+    Route::get('payments/cancel', [PaymentsController::class, 'cancel'])
+        ->name('paymnets.cancel');
+
 
     //soft delete classroom
     Route::prefix('/classroom/trashed')
@@ -77,11 +102,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('classwork/{classwork}/submissions', [SubmissionController::class, 'store'])
         ->name('submissions.store');
-        // ->middleware('can:create , APP\Model\classwork');
+    // ->middleware('can:create , APP\Model\classwork');
 
 
     Route::get('submissions/{submission}/file', [SubmissionController::class, 'file'])
         ->name('submissions.file');
-
-
 });

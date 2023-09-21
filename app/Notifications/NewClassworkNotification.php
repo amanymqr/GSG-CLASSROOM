@@ -15,7 +15,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use LaravelLang\Lang\Plugins\Spark\Stripe;
 use Nette\Utils\Strings;
 
-class NewClassworkNotification extends Notification
+class NewClassworkNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -24,7 +24,7 @@ class NewClassworkNotification extends Notification
      */
     public function __construct(protected Classwork $classwork)
     {
-        //
+        $this->onQueue('notifications');
     }
 
     /**
@@ -36,10 +36,10 @@ class NewClassworkNotification extends Notification
     {
         $via = [
             'database',
-            HadaraSMSChannel::class,
-            'broadcast',
+            // HadaraSMSChannel::class,
+            // 'broadcast',
             // 'vonage',
-            'mail',
+            // 'mail',
         ];
         // if ($notifiable->receive_mail_notifications) {
         //     $via[] = 'mail';
@@ -145,4 +145,5 @@ class NewClassworkNotification extends Notification
             //
         ];
     }
+
 }

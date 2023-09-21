@@ -17,6 +17,11 @@ class ClassroomController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        $this->middleware('subscribed')->only('create', 'store');
+        //$this->authorizeResource(Classroom::class,'classroom');
+    }
     public function index()
     {
 
@@ -94,7 +99,7 @@ class ClassroomController extends Controller
     public function destroy(string $id)
     {
         if (!Auth::guard('sanctum')->user()->tokenCan('classrooms.delete')) {
-            abort(403 , 'You cant delete this Classroom ');
+            abort(403, 'You cant delete this Classroom ');
         }
         Classroom::destroy($id);
         return response()->json([], 204);

@@ -3,17 +3,18 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Contracts\Translation\HasLocalePreference;
 use App\Models\Comment;
 use App\Models\Classroom;
 use App\Models\Submission;
+use App\Models\Subscription;
 use App\Models\ClassworkUser;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 
 class User extends Authenticatable implements MustVerifyEmail, HasLocalePreference
 {
@@ -91,6 +92,12 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     //     ); //through model
 
     // }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
 
     public function classworks()
     {
