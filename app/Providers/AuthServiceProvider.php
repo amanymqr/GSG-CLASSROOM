@@ -34,7 +34,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         //Define Gates
 
-        Gate::before(function (User $user, $abitiy) {
+        Gate::before(function ($user, $abitiy) {
             if ($user->super_admin) {
                 return true;
             }

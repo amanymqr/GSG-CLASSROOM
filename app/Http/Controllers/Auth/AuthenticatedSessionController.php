@@ -15,17 +15,17 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create($gurad): View
     {
-        return view('auth.login');
+        return view('auth.login' , compact('gurad'));
     }
 
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request , $gurad): RedirectResponse
     {
-        $request->authenticate();
+        $request->authenticate($gurad);
 
         $request->session()->regenerate();
 
@@ -35,9 +35,9 @@ class AuthenticatedSessionController extends Controller
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request , $gurad): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        Auth::guard($gurad)->logout();
 
         $request->session()->invalidate();
 
