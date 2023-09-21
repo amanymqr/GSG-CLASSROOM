@@ -35,12 +35,13 @@ return [
     |
     */
 
+
     'guards' => [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'admin' => [
+        'admins' => [
             'driver' => 'session',
             'provider' => 'admins',
         ],
@@ -62,17 +63,16 @@ return [
     | Supported: "database", "eloquent"
     |
     */
-
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
+
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],
-
 
         // 'users' => [
         //     'driver' => 'database',
@@ -99,24 +99,21 @@ return [
     |
     */
 
+
     'passwords' => [
         'users' => [
             'provider' => 'users',
             'table' => 'password_reset_tokens',
-            'expire' => 120,
-            //minute
-            'throttle' => 120,
-            // secondsبعد دقيقةبقدر يطلب لينك جديد
+            'expire' => 120, //minutes
+            'throttle' => 120, //seconds
         ],
-
         'admins' => [
             'provider' => 'admins',
             'table' => 'password_reset_tokens',
-            'expire' => 30,
-            'throttle' => 300,
+            'expire' => 30, //minutes
+            'throttle' => 300, //seconds
         ],
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Password Confirmation Timeout
