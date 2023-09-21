@@ -4,21 +4,23 @@ namespace App\Models;
 
 use App\Models\Plan;
 use App\Models\User;
+use App\concerns\HasPrice;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Subscription extends Model
 {
-    use HasFactory;
+    use HasFactory , HasPrice;
+    protected $fillable = [
+        'plan_id', 'user_id', 'price', 'expires_at', 'status'
+    ];
 
-    public function price(): Attribute
-    {
-        return new Attribute(
-            get: fn ($price) => $price / 100,
-            set: fn ($price) => $price * 100,
-        );
-    }
+    protected $cast = [
+        'expires_at' => 'datetime',
+    ];
+
+
 
     public function user()
     {

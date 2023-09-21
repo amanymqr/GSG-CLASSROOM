@@ -1,21 +1,22 @@
 <?php
 
 use App\Models\Classroom;
+use App\Models\Submission;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TopicsController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ClassworkController;
-use App\Http\Controllers\ClassroomsController;
-use App\Http\Controllers\JoinClassroomController;
-use App\Http\Controllers\ClassroomPeopleController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\PlansController;
+use App\Http\Controllers\Stripecontroller;
+use App\Http\Controllers\TopicsController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\ClassworkController;
+use App\Http\Middleware\ApplyUserPreferences;
+use App\Http\Controllers\ClassroomsController;
 use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\SubscriptionController;
-use App\Http\Middleware\ApplyUserPreferences;
-use App\Models\Submission;
 use DragonCode\Contracts\Cashier\Config\Payment;
+use App\Http\Controllers\JoinClassroomController;
+use App\Http\Controllers\ClassroomPeopleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -55,10 +56,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('payments', [PaymentsController::class, 'store'])
         ->name('payments.store');
 
-    Route::get('payments/success', [PaymentsController::class, 'seccess'])
+        Route::get('payments/{subscription}/success', [PaymentsController::class, 'seccess'])
         ->name('paymnets.seccess');
 
-    Route::get('payments/cancel', [PaymentsController::class, 'cancel'])
+    Route::get('payments/{subscription}/cancel', [PaymentsController::class, 'cancel'])
         ->name('paymnets.cancel');
 
 
@@ -108,3 +109,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('submissions/{submission}/file', [SubmissionController::class, 'file'])
         ->name('submissions.file');
 });
+
+Route::post('/payments/srtipe/webhook', Stripecontroller::class);

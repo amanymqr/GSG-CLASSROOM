@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Features;
+use App\concerns\HasPrice;
 use App\Models\Subscription;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Plan extends Model
 {
-    use HasFactory;
+    use HasFactory , HasPrice;
     protected $guarded = [];
 
     public function features()
@@ -21,13 +22,7 @@ class Plan extends Model
 
     }
 
-    public function price(): Attribute
-    {
-        return new Attribute(
-            get: fn ($price) => $price / 100,
-            set: fn ($price) => $price * 100,
-        );
-    }
+
 
     public function subscriptions()
     {
